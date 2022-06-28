@@ -82,10 +82,10 @@ analytics:
 author:
   name             : "Antonios Gementzopoulos"
   avatar           : "FaceShot.jpg"
-  bio              : "Aerodynamics"
-  location         : "PhD Candidate, Department of Aerospace Engineering, University of Maryland"
+  bio              : "Aerodynamics Researcher"
+  location         : "University of Maryland, Department of Aerospace Engineering"
   employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "https://scholar.google.com/citations?user=tQpJjzwAAAAJ&hl=en&authuser=1"
   email            :
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"

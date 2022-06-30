@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-Hello, World! 
+Hello, World! This website is under construction. 
 
 A data-driven personal website
 ======

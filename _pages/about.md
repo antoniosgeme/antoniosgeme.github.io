@@ -15,4 +15,9 @@ I am a PhD Candidate in the Department of Aerospace Engineering at the Universit
 
  News & updates
 ======
+* Our paper [Physics of gust response mitigation in open-loop pitching manoeuvres](https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/physics-of-gust-response-mitigation-in-openloop-pitching-manoeuvres/7EEC7C8FD57C01653A1CF16EA2774862) was accepted for publication at the Journal of Fluid Mechanics. 
+* Our paper [Experiments in transverse gust mitigation using open-loop pitch maneuvers](https://arc.aiaa.org/doi/abs/10.2514/6.2022-0333) was accepted for presentation at the 2022 AIAA SciTech Forum. 
+* Our paper [Lift and vortex development during transverse wing-gust encounters for a blunt-edge airfoil](https://arc.aiaa.org/doi/abs/10.2514/6.2022-0045) was accepted for presentation at the 2022 AIAA SciTech Forum. 
+
+
 

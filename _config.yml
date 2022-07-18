@@ -80,9 +80,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Antonios Gementzopoulos"
+  name             : "      Antonios Gementzopoulos"
   avatar           : "FaceShot_small.jpg"
-  bio              : "PhD Candidate <br> Aerodynamics Researcher"
+  bio              : "      PhD Candidate <br> Aerodynamics Researcher"
   location         : "College Park, MD"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"

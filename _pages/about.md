@@ -13,7 +13,7 @@ I am a PhD Candidate in the Department of Aerospace Engineering at the Universit
 
  I am interested in the flow-physics of flight in unsteady environments as well as the design of physics-informed flight controllers. My current research is focused on understanding the aerodynamics of large-amplitude gust encounters and developing methods to mitigate unsteady aerodynamic forcing. I use modern control theory with a variety of flow sensing techniques to discover novel ways to detect and effectively mitigate disturbances. My long term goal to understand how to design aircraft that use unsteady lift mechanisms and that can reliably operate in unsteady environments. 
 
- Here is my dads art: [AnastasiosArt](https://www.etsy.com/shop/ArtAnastasios) as well as his art company:s [astromurals.com](https://astromurals.com/)
+ Here is my dads art: [AnastasiosArt](https://www.etsy.com/shop/ArtAnastasios) as well as his mural company: [astromurals.com](https://astromurals.com/)
 
  News & updates
 ======

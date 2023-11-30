@@ -7,17 +7,38 @@ author_profile: true
 
 <div class="publications-list">
   <h2>Publications</h2>
-  <ol>
+  <ul>
     {% for publication in site.data.publications %}
       <li>
-        <h3>{{ publication.title }}</h3>
-        <p><strong>Authors:</strong> {{ publication.author }}</p>
-        <p><strong>Journal/Book Title:</strong> {{ publication.journal | default: publication.booktitle }}</p>
-        <p><strong>Volume/Number:</strong> {{ publication.volume | default: publication.number }}</p>
-        <p><strong>Pages:</strong> {{ publication.pages }}</p>
-        <p><strong>Year:</strong> {{ publication.year }}</p>
-        <p><strong>Publisher:</strong> {{ publication.publisher | default: "N/A" }}</p>
+        <p>
+          {% assign authors = publication.author | split: ' and ' %}
+          {% for author in authors %}
+            {% if forloop.last %}
+              {% if authors.size > 1 %}
+                and {{ author | split: ', ' | reverse | join: ' ' }}
+              {% else %}
+                {{ author | split: ', ' | reverse | join: ' ' }}
+              {% endif %}
+            {% else %}
+              {{ author | split: ', ' | reverse | join: ' ' }},
+            {% endif %}
+          {% endfor %}
+          ({% if publication.year %}{{ publication.year }}.{% endif %})
+          {% if publication.title %}
+            {% if publication.year %}. {% endif %}
+            <strong>{{ publication.title }}</strong>.
+          {% endif %}
+          {% if publication.journal %}
+            {{ publication.journal }},
+          {% endif %}
+          {% if publication.volume %}
+            {{ publication.volume }},
+          {% endif %}
+          {% if publication.pages %}
+            {{ publication.pages }}
+          {% endif %}
+        </p>
       </li>
     {% endfor %}
-  </ol>
+  </ul>
 </div>

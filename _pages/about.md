@@ -8,14 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-Greetings! I am a PhD Candidate pursuing my studies in the Department of Aerospace Engineering at the University of Maryland, where I'm fortunate to conduct research under the guidance of [Dr. Anya Jones](https://aero.umd.edu/clark/faculty/40/Anya-R-Jones) in the [Separated and Transient Aerodynamics Laboratory (STAL)](http://stal.umd.edu/). 
-
-
-My research revolves around the realms of unsteady aerodynamics and control theory, and is aimed at addressing challenges across fields such as aerospace engineering and renewable energy. Specifically, I am interested in the flow-physics of the underlying unsteady processes encountered by such systems, as well as their ability to make decisions under uncertainty.  Currently, I am interested in understanding optimal ways of making decisions under uncertainty.  best integrate flow sensing in active control strategies. Systems often need to make  methodologies to tackle complex aerodynamic systems. My interests span various applications, including understanding the dynamics of flight in turbulent conditions and designing sophisticated control strategies for improved performance and safety. I am also intrigued by the aerodynamic behavior of wind turbines and the development of control methods to optimize their efficiency amidst fluctuating wind conditions. My overarching goal is to contribute innovative solutions to diverse unsteady aerodynamic problems, ultimately fostering advancements in aerospace technology and renewable energy sectors.
-
-I am interested in the flow-physics of flight in unsteady environments as well as the design of physics-informed flight controllers. My current research focuses on integrating advanced flow sensing techniques with modern control methodologies to understand and optimize complex aerodynamic systems
-
-My current research is focused on understanding the aerodynamics of large-amplitude gust encounters and developing methods to mitigate unsteady aerodynamic forcing. I use modern control theory with a variety of flow sensing techniques to discover novel ways of detecting and effectively mitigating disturbances. My long term goal to understand how to design aircraft that use unsteady lift mechanisms and that can reliably operate in unsteady environments. 
+Greetings! I am a PhD Candidate pursuing my studies in the Department of Aerospace Engineering at the University of Maryland, where I'm fortunate to conduct research under the guidance of [Dr. Anya Jones](https://aero.umd.edu/clark/faculty/40/Anya-R-Jones) in the [Separated and Transient Aerodynamics Laboratory (STAL)](http://stal.umd.edu/). My research revolves around the realms of unsteady aerodynamics and control theory, and is aimed at addressing challenges across fields such as aerospace engineering and renewable energy. 
 
  News & updates
 ======

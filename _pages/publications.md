@@ -7,7 +7,7 @@ author_profile: true
 
 <div class="publications-list">
   <h2>Publications</h2>
-  <ul>
+  <ol>
     {% for publication in site.data.publications %}
       <li>
         <h3>{{ publication.title }}</h3>
@@ -19,5 +19,5 @@ author_profile: true
         <p><strong>Publisher:</strong> {{ publication.publisher | default: "N/A" }}</p>
       </li>
     {% endfor %}
-  </ul>
+  </ol>
 </div>

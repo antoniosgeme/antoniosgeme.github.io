@@ -7,7 +7,7 @@ author_profile: true
 
 <div class="publications-list">
   <h2>Journal Articles</h2>
-  <ul>
+  <ol>
     {% for publication in site.data.publications %}
       {% if publication.type == 'journal' %}
         <li>
@@ -42,10 +42,10 @@ author_profile: true
         </li>
       {% endif %}
     {% endfor %}
-  </ul>
+  </ol>
   
   <h2>Conference Articles</h2>
-  <ul>
+  <ol>
     {% for publication in site.data.publications %}
       {% if publication.type == 'conference' %}
         <li>
@@ -77,5 +77,5 @@ author_profile: true
         </li>
       {% endif %}
     {% endfor %}
-  </ul>
+  </ol>
 </div>

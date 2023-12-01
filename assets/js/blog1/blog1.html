@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jakowski Conformal Map Calculator</title>
+  <style>
+    /* CSS styles for layout */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input[type="number"] {
+      width: 100px;
+      margin: 5px;
+    }
+    button {
+      padding: 5px 10px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jakowski Conformal Map Calculator</h1>
+  <label for="real">Real Part (Re):</label>
+  <input type="number" id="real"><br>
+  <label for="imaginary">Imaginary Part (Im):</label>
+  <input type="number" id="imaginary"><br>
+  <button onclick="calculate()">Calculate</button><br>
+  <h2>Result:</h2>
+  <p id="result"></p>
+
+  <script src="blog1.js"></script>
+  <script>
+    function calculate() {
+      const realPart = parseFloat(document.getElementById('real').value);
+      const imagPart = parseFloat(document.getElementById('imaginary').value);
+
+      const result = jakowskiConformalMap(realPart, imagPart);
+      document.getElementById('result').innerText = `Result: ${result}`;
+    }
+  </script>
+</body>
+</html>

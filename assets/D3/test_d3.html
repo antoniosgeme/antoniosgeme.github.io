@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3.js Sine Wave Plot</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg width="600" height="400"></svg>
+  <input type="range" id="freqSlider" min="1" max="5" step="0.1" value="1">
+  <span id="freqValue">Frequency: 1</span>
+
+  <script>
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const width = 600 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear()
+      .domain([0, 2 * Math.PI])
+      .range([0, width]);
+
+    const y = d3.scaleLinear()
+      .domain([-1, 1])
+      .range([height, 0]);
+
+    const line = d3.line()
+      .x((d, i) => x(i * 0.1))
+      .y(d => y(Math.sin(d)));
+
+    const x_axis = d3.axisBottom(x);
+    const y_axis = d3.axisLeft(y);
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(x_axis);
+
+    svg.append("g")
+      .call(y_axis);
+
+    const t = d3.transition().duration(500);
+
+    const freqSlider = document.getElementById("freqSlider");
+    const freqValue = document.getElementById("freqValue");
+
+    freqSlider.addEventListener("input", function() {
+      freqValue.textContent = "Frequency: " + this.value;
+      update(+this.value);
+    });
+
+    const data = d3.range(0, 2 * Math.PI, 0.1);
+
+    svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", line);
+
+    function update(newFreq) {
+      svg.select(".line")
+        .datum(data)
+        .transition(t)
+        .attr("d", line.y(d => y(Math.sin(d * newFreq))));
+    }
+
+    update(1);
+
+  </script>
+</body>
+</html>

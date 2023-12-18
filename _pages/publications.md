@@ -4,11 +4,11 @@ title: "Publications"
 permalink: /publications/
 author_profile: true
 ---
-
-{% bibliography %} 
-
-
 <!--
+{% bibliography %} 
+-->
+
+
 <div class="publications-list">
   <h2>Journal Articles</h2>
   <ol>
@@ -87,4 +87,3 @@ author_profile: true
     {% endfor %}
   </ol>
 </div>
---> 

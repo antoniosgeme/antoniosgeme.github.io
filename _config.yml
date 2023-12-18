@@ -311,5 +311,5 @@ compress_html:
     envs: development
 
 
-scholar: 
-  style:ieee
+#scholar: 
+  #style:ieee

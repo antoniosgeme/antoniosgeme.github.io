@@ -1,6 +1,6 @@
 import bibtexparser
 import yaml
-from scholarly import scholarly
+import requests
 
 def main():
 
@@ -22,18 +22,9 @@ def main():
             'pages': entry.get('pages', ''),
             'year': entry.get('year', ''),
             'publisher': entry.get('publisher', ''),
+            'doi': entry.get('DOI', ''),
             'type': None,
         }
-        title = entry.get('title', '').strip()
-        author = entry.get('author', '').split(' and ')[0] 
-
-        doi = find_doi(title,author)
-        if not doi == None:
-            print("DOI search succesful")
-            entry_dict['doi'] = f'https://doi.org/{doi}'
-        else:
-            print("DOI search unsuccesful")
-
 
         possible_abstract_names = [
             "Bulletin of the American Physical Society",
@@ -49,6 +40,9 @@ def main():
             else:
                 entry_dict['type'] = 'conference'
         
+        if not entry_dict['type'] == 'abstract':
+            doi = get_doi_crossref(entry_dict['title'])
+            entry_dict['doi'] = doi
         # Remove empty fields
         entry_dict = {k: v for k, v in entry_dict.items() if v}
 
@@ -61,21 +55,28 @@ def main():
 
     print('BibTeX to YAML conversion complete. Output saved as publications.yml.')
 
+def get_doi_crossref(title):
+    # Replace spaces with '+' for the query
+    query = title.replace(' ', '+')
 
-def find_doi(title, author):
-    # Search Google Scholar
-    search_query = scholarly.search_pubs(f'{title} {author}')
-    
-    try:
-        # Fetch first publication result
-        pub = next(search_query)
-        
-        # Retrieve and return DOI
-        return pub.bib.get('doi', None)
-    except StopIteration:
-        # No results found
+    # Crossref API URL for works
+    url = f"https://api.crossref.org/works?query={query}"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        items = data.get('message', {}).get('items', [])
+        if items:
+            for item in items:
+                if 'title' in item and item['title'][0].lower() == title.lower():
+                    return item.get('DOI', 'DOI not found')
+        else:
+            return None
+    else:
         return None
-
+    
+    return None
 
 if __name__ == "__main__":
     main()

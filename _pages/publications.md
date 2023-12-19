@@ -19,17 +19,28 @@ author_profile: true
               {% assign lastName = authorNames[0] %}
               {% assign firstInitial = authorNames[1] | slice: 0 %}
               {% if forloop.last %}
-                and {{ lastName }} {{ firstInitial }}.
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.
+                {% endif %}
               {% else %}
-                {{ lastName }} {{ firstInitial }}.,
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>,
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.,
+                {% endif %}
               {% endif %}
             {% else %}
-              {{ author }},
+              {% if lastName == "Gementzopoulos" %}
+                <strong>{{ lastName }}.</strong>,
+              {% else %}
+                {{ author }},{% endif %}
             {% endif %}
           {% endfor %}
           ({% if publication.year %}{{ publication.year }}{% endif %})
           {% if publication.title %}
-            {% if publication.year %} {% endif %}
+            {% if publication.year %}. {% endif %}
             <strong>{{ publication.title }}</strong>.
           {% endif %}
           {% if publication.journal %}
@@ -41,11 +52,14 @@ author_profile: true
           {% if publication.pages %}
             {{ publication.pages }}
           {% endif %}
+          {% if publication.doi %}
+            <a href="https://doi.org/{{ publication.doi }}" target="_blank">DOI: {{ publication.doi | remove: ' ' }}</a>
+          {% endif %}
         </p>
       </li>
     {% endfor %}
   </ol>
-  
+
   <h2>Conference Articles</h2>
   <ol>
     {% assign conferencePublications = site.data.publications | where: 'type', 'conference' %}
@@ -59,12 +73,23 @@ author_profile: true
               {% assign lastName = authorNames[0] %}
               {% assign firstInitial = authorNames[1] | slice: 0 %}
               {% if forloop.last %}
-                and {{ lastName }} {{ firstInitial }}.
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.
+                {% endif %}
               {% else %}
-                {{ lastName }} {{ firstInitial }}.,
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>,
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.,
+                {% endif %}
               {% endif %}
             {% else %}
-              {{ author }},
+              {% if lastName == "Gementzopoulos" %}
+                <strong>{{ lastName }}.</strong>,
+              {% else %}
+                {{ author }},{% endif %}
             {% endif %}
           {% endfor %}
           ({% if publication.year %}{{ publication.year }}{% endif %})
@@ -77,6 +102,9 @@ author_profile: true
           {% endif %}
           {% if publication.pages %}
             {{ publication.pages }}
+          {% endif %}
+          {% if publication.doi %}
+            <a href="https://doi.org/{{ publication.doi }}" target="_blank">DOI: {{ publication.doi | remove: ' ' }}</a>
           {% endif %}
         </p>
       </li>
@@ -96,12 +124,23 @@ author_profile: true
               {% assign lastName = authorNames[0] %}
               {% assign firstInitial = authorNames[1] | slice: 0 %}
               {% if forloop.last %}
-                and {{ lastName }} {{ firstInitial }}.
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.
+                {% endif %}
               {% else %}
-                {{ lastName }} {{ firstInitial }}.,
+                {% if lastName == "Gementzopoulos" %}
+                  <strong>{{ lastName }} {{ firstInitial }}.</strong>,
+                {% else %}
+                  {{ lastName }} {{ firstInitial }}.,
+                {% endif %}
               {% endif %}
             {% else %}
-              {{ author }},
+              {% if lastName == "Gementzopoulos" %}
+                <strong>{{ lastName }}.</strong>,
+              {% else %}
+                {{ author }},{% endif %}
             {% endif %}
           {% endfor %}
           ({% if publication.year %}{{ publication.year }}{% endif %})
@@ -114,6 +153,9 @@ author_profile: true
           {% endif %}
           {% if publication.pages %}
             {{ publication.pages }}
+          {% endif %}
+          {% if publication.doi %}
+            <a href="https://doi.org/{{ publication.doi }}" target="_blank">DOI: {{ publication.doi | remove: ' ' }}</a>
           {% endif %}
         </p>
       </li>

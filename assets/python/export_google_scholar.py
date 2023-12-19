@@ -1,3 +1,6 @@
+## This script finds all the google scholar entries of an author and 
+# creates a bibtex file for them
+
 import bibtexparser
 import yaml
 from scholarly import scholarly
@@ -8,6 +11,7 @@ import urllib.request
 from urllib.error import HTTPError
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import re
 
 def main():
     author_name = "Antonios Gementzopoulos"
@@ -19,7 +23,7 @@ def main():
             doi = get_doi_crossref(title)
             if doi:
                 bibtex_entry = retrieve_bibtex_from_doi(doi)
-                file.write(bibtex_entry + "\n\n")
+                file.write(bibtex_entry + "\n")
 
 def get_doi_crossref(title):
     # Replace spaces with '+' for the query

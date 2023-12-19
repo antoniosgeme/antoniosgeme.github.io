@@ -76,25 +76,6 @@ def find_doi(title, author):
         # No results found
         return None
 
-def find_doi_old(bibtex_entry):
-    # Crossref API endpoint
-    crossref_api = "https://api.crossref.org/works"
-
-    # Extract title from BibTeX entry
-    title = bibtex_entry.get('title', '').strip()
-
-    # Query Crossref API
-    response = requests.get(crossref_api, params={'query.title': title})
-
-    if response.status_code == 200:
-        results = response.json()['message']['items']
-        for item in results:
-            print(item['title'][0].lower())
-            # Check if the title matches closely
-            if 'title' in item and item['title'][0].lower() == title.lower():
-                return item.get('DOI', None)
-    return None
-
 
 if __name__ == "__main__":
     main()

@@ -2,9 +2,16 @@ import serpapi
 import requests
 from bs4 import BeautifulSoup
 import time
+import sys
+
+if len(sys.argv) > 1:
+    input_value = sys.argv[1]
+    print(f"Input value: {input_value}")
+else:
+    print("No input value provided.")
 
 params = {
-  "api_key": "e917881edfa4555d0c217ca258f6424c3d0358be2e2d802e810a97dba468b9be",
+  "api_key": input_value,
   "engine": "google_scholar_author",
   "hl": "en",
   "author_id": "tQpJjzwAAAAJ&hl=en"
@@ -20,7 +27,7 @@ with open('assets\\CV\\references.bib', 'w', encoding='utf-8') as bibfile:
     print("Finding bib entry " + str(i+1) + " of " + str(len(titles)))
     time.sleep(5) # Wait a bit so we do not get banned by google scholar
     params = {
-      "api_key": "e917881edfa4555d0c217ca258f6424c3d0358be2e2d802e810a97dba468b9be",
+      "api_key": input_value,
       "engine": "google_scholar",
       "q": title,
       "hl": "en"
@@ -31,7 +38,7 @@ with open('assets\\CV\\references.bib', 'w', encoding='utf-8') as bibfile:
     result_id = results['organic_results'][0]['result_id']
 
     params = {
-      "api_key": "e917881edfa4555d0c217ca258f6424c3d0358be2e2d802e810a97dba468b9be",
+      "api_key": input_value,
       "engine": "google_scholar_cite",
       "q": result_id
     }

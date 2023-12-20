@@ -22,8 +22,8 @@ REM Run pdflatex again to resolve references
 pdflatex %CV_DOCUMENT%.tex
 pdflatex %CV_DOCUMENT%.tex
 REM Cleanup unnecessary files (optional)
-del %CV_DOCUMENT%.aux %CV_DOCUMENT%.bbl %CV_DOCUMENT%.blg %CV_DOCUMENT%.log %CV_DOCUMENT%.out %CV_DOCUMENT%.run.xml %CV_DOCUMENT%.bcf
-
+del %CV_DOCUMENT%.aux %CV_DOCUMENT%.bbl  %CV_DOCUMENT%.log %CV_DOCUMENT%.out %CV_DOCUMENT%.run.xml %CV_DOCUMENT%.bcf
+REM %CV_DOCUMENT%.blg
 REM Open the PDF in your default PDF viewer (optional)
 REM Uncomment the following line if you want to automatically open the PDF after compilation
 REM start "" %CV_DOCUMENT%.pdf

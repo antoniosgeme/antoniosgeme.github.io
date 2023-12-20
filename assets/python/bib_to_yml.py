@@ -5,13 +5,13 @@ import requests
 def main():
 
     # Load the BibTeX file
-    with open('references.bib', 'r', encoding='utf-8') as bibtex_file:
+    with open('assets\\CV\\references.bib', 'r', encoding='utf-8') as bibtex_file:
         bib_database = bibtexparser.load(bibtex_file)
 
     # Convert each entry to a dictionary
     entries = []
     for (i,entry) in enumerate(bib_database.entries):
-        print("Processing entry " + str(i+1) + " of "+str(len(bib_database.entries)+1))
+        print("Processing entry " + str(i+1) + " of "+str(len(bib_database.entries)))
 
         entry_dict = {
             'title': entry.get('title', ''),
@@ -25,17 +25,14 @@ def main():
             'doi': entry.get('DOI', ''),
             'type': None,
         }
-
-        possible_abstract_names = [
-            "Bulletin of the American Physical Society",
-            "APS Division of Fluid Dynamics Meeting Abstracts"
-                                ]
         
         if entry['ENTRYTYPE'] == 'article':
-            entry_dict['type'] = 'journal'
+            if entry.get('keywords', '') == 'abstract':
+                entry_dict['type'] = 'abstract'
+            else:
+                entry_dict['type'] = 'journal'
         else:
-            if (entry.get('journal', '') in possible_abstract_names
-            or entry.get('booktitle', '') in possible_abstract_names):
+            if entry.get('keywords', '') == 'abstract':
                 entry_dict['type'] = 'abstract'
             else:
                 entry_dict['type'] = 'conference'
@@ -49,7 +46,7 @@ def main():
         entries.append(entry_dict)
 
     # Write the YAML file
-    with open('../_data/publications.yml', 'w', encoding='utf-8') as yaml_file:
+    with open('_data/publications.yml', 'w', encoding='utf-8') as yaml_file:
         yaml.dump(entries, yaml_file, default_flow_style=False, allow_unicode=True)
         #yaml_file.write("\n")  # Add an empty line between entries
 

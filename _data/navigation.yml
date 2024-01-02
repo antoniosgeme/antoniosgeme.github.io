@@ -16,6 +16,9 @@ main:
     url: /assets/CV/CV_AntoniosG.pdf
     target: _blank
   
+  - title: "Gallery"
+    url: /gallery/
+  
   #- title: "Blog Posts"
   #  url: /year-archive/
     

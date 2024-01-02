@@ -1,8 +1,8 @@
 @echo off
 
 echo Extracting and processing references from google scholar...
-REM call python assets\python\export_google_scholar.py
-REM call python assets\python\bib_process.py
+call python assets\python\export_google_scholar.py
+call python assets\python\bib_process.py
 
 echo Updating YAML file...
 REM call python assets\python\bib_to_yml.py

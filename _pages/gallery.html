@@ -1,0 +1,51 @@
+---
+layout: archive
+title: "Gallery"
+permalink: /gallery/
+author_profile: true
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gallery</title>
+  <style>
+    /* Style for the image containers */
+    .gallery {
+      display: flex; /* Display images in a horizontal row */
+      justify-content: space-between; /* Add space between images */
+    }
+    
+    .gallery a {
+      text-decoration: none; /* Remove underlines from links */
+    }
+
+    .image-container {
+      flex: 1; /* Equal width for each image container */
+      margin-right: 10px; /* Add spacing between images (adjust as needed) */
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <div class="image-container">
+      <a href="/images/IMG_4002.jpg" data-title="PIV image">
+        <img src="/images/gallery/IMG_4002.jpg" alt="PIV image" width="400" height="300">
+      </a>
+    </div>
+
+    <!-- Add the second image here -->
+    <div class="image-container">
+      <a href="/images/breakdown.png" data-title="Breakdown Image">
+        <img src="/images/gallery/breakdown.png" alt="Breakdown Image" width="315" height="300">
+      </a>
+    </div>
+
+    <div class="image-container">
+      <a href="/images/LEV.png" data-title="LEV Image">
+        <img src="/images/gallery/LEV.png" alt="LEV Image" width="315" height="300">
+      </a>
+    </div>
+  </div>
+</body>
+</html>

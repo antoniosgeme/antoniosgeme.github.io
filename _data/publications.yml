@@ -95,3 +95,19 @@
     of uncertainty
   type: abstract
   year: '2023'
+- author: Gementzopoulos, Antonios and Sedky, Girguis and Jones, Anya
+  doi: 10.1103/physrevfluids.9.014701
+  journal: Phys. Rev. Fluids
+  pages: '014701'
+  publisher: American Physical Society
+  title: Role of vorticity distribution in the rise and fall of lift during a transverse
+    gust encounter
+  type: journal
+  volume: '9'
+  year: '2024'
+- author: Wild, Oliver and Gementzopoulos, Antonios and Jones, Anya
+  pages: '1120'
+  title: 'Navigating unsteady airwakes: Three-dimensionality and sideslip in strong
+    transverse gust encounters'
+  type: conference
+  year: '2024'

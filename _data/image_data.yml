@@ -1,12 +1,23 @@
-- project: Time-Resolved Particle Image Velocimetry (TR-PIV)
-  description : PIV of wings encountering gusts and executing unsteady maneuvers
+- project: Particle Image Velocimetry (PIV)
+  description : These are some examples different PIV and PTV experiments conducted at the STAL tow-tank. 
   images:
     - source: /images/gallery/IMG_4002.jpg
-      caption: tow tank PIV setup 
-    - source: /images/gallery/LEV.png
-      caption: vortex growth
+      caption: static 2D PIV setup 
+    - source: /images/gallery/IMG_9883.jpg
+      caption: static 3D PTV setup 
     - source: /images/gallery/IMG_2302.jpg
-      caption: characterization of gust
+      caption: characterization of the gust
+
+- project: Instrumented Wing Models
+  description: These models are equipped with different types of sensors that allow unique unsteady flow measurements.
+  images:
+    - source: /images/gallery/IMG_8485.jpg
+      caption: testing of instrumented model 
+    - source: /images/gallery/light_wing.jpg
+      caption: rendering of an instrumented model
+    - source: /images/gallery/WingInside.jpg
+      caption: sensors inside the wing model
+
 
 - project: Vortex Breakdown
   description : Experimental investigation of vortex bubble breakdown

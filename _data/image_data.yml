@@ -2,28 +2,28 @@
   description : These are some examples different PIV and PTV experiments conducted at the STAL tow-tank. 
   images:
     - source: /images/gallery/IMG_4002.jpg
-      caption: static 2D PIV setup 
+      caption: Static 2D PIV setup 
     - source: /images/gallery/IMG_9883.jpg
-      caption: static 3D PTV setup 
+      caption: Static 3D PTV setup 
     - source: /images/gallery/IMG_2302.jpg
-      caption: characterization of the gust
+      caption: Characterization of the gust
 
 - project: Instrumented Wing Models
   description: These models are equipped with different types of sensors that allow unique unsteady flow measurements.
   images:
     - source: /images/gallery/IMG_8485.jpg
-      caption: testing of instrumented model 
+      caption: Testing of instrumented model 
     - source: /images/gallery/light_wing.jpg
-      caption: rendering of an instrumented model
+      caption: Rendering of an instrumented model
     - source: /images/gallery/WingInside.jpg
-      caption: sensors inside the wing model
+      caption: Sensors inside the wing model
 
 
 - project: Vortex Breakdown
   description : Experimental investigation of vortex bubble breakdown
   images:
     - source: /images/gallery/IMG_7257.jpg
-      caption: experimental apparatus
+      caption: Experimental apparatus
     - source: /images/gallery/IMG_7256.jpg
       caption: PIV setup
     - source: /images/gallery/Bubble.jpg

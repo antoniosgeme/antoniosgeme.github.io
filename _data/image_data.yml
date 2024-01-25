@@ -13,7 +13,7 @@
   images:
     - source: /images/gallery/IMG_8485.jpg
       caption: Testing of instrumented model 
-    - source: /images/gallery/light_wing.jpg
+    - source: /images/gallery/dark_wing_high_res.jpg
       caption: Rendering of an instrumented model
     - source: /images/gallery/WingInside.jpg
       caption: Sensors inside the wing model

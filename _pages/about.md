@@ -12,7 +12,7 @@ Greetings! I am a PhD Candidate in the Department of Aerospace Engineering at th
 
 Nowadays, you can find me in the lab doing experiments in a water tank or wind tunnel facility, or developing aerodynamics related software. Previously, I earned a Master's in aeronautical engineering from the University of Cambridge and a Bachelor's in mechanical engineering from New York University. 
 
-Please do enjoy the potential flow and conformal map calculator below and see my [post](/posts/2023/11/blog-post-1/) and if you want more info. 
+Please do enjoy the potential flow and conformal map calculator below and see my [post](/posts/2023/11/blog-post-1/) if you want more info on it. 
 
 <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>
 

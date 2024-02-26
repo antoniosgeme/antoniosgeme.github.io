@@ -16,12 +16,12 @@ Here is a potential flow and conformal map calculator created for educational pu
 
 <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>
 
-<div id="plot-options-container" style="display: flex; align-items: flex-start;">
-  <div id="plot-container" style="flex: 1;">
+<div id="plot-options-container">
+  <div id="plot-container">
     <div id="observablehq-viewof-gl-a125070b"></div>
     <div id="observablehq-viewof-options-a125070b"></div>
   </div>
-  <div id="options-container" style="flex: 1; margin-left: 10px;"> 
+  <div id="options-container"> 
     <div id="observablehq-viewof-flowSelection-a125070b"></div>
     <div id="observablehq-viewof-alpha_deg-a125070b"></div>
     <div id="observablehq-viewof-U-a125070b"></div>
@@ -32,32 +32,41 @@ Here is a potential flow and conformal map calculator created for educational pu
   </div>
 </div>
 
-
 <style>
-    #wrapper {
-      /* Add height to ensure there's enough scrollable content */
-      height: 1000px; /* You can adjust this height as needed */
-    }
+  #wrapper {
+    height: 1000px;
+  }
 
+  #plot-options-container {
+    display: flex;
+    align-items: flex-start;
+    position: static;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+  }
+
+  #plot-container {
+    flex: 1;
+  }
+
+  #options-container {
+    flex: 1;
+    margin-left: 10px;
+  }
+
+  /* Media query for mobile devices */
+  @media (max-width: 768px) {
     #plot-options-container {
-      display: flex;
-      align-items: flex-start;
-      position: static;
-      top: 0; /* Stick to the top of the viewport */
-      background-color: white; /* Adjust the background color as needed */
-      z-index: 1; /* Add z-index to ensure it appears above other content */
-    }
-
-    #plot-container {
-      flex: 1;
+      flex-direction: column;
     }
 
     #options-container {
-      flex: 1;
-      margin-left: 10px;
+      margin-left: 0;
+      margin-top: 10px;
     }
-    
-  </style>
+  }
+</style>
 
 
 

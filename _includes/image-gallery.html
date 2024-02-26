@@ -29,18 +29,31 @@
     .project {
         text-align: center;
         margin: 0 auto;
-
-        .image-gallery a span.caption {
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 3px 0;
-    color: #000; /* Set the caption color to black */
     }
 
-}
+    .image-gallery a span.caption {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 3px 0;
+        color: #000; /* Set the caption color to black */
+    }
+
+    /* Media query for mobile devices */
+    @media (max-width: 768px) {
+        .image-gallery a {
+            flex-basis: calc(50% - 10px); /* Adjust to 2 images per row */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .image-gallery a {
+            flex-basis: 100%; /* Adjust to 1 image per row */
+        }
+    }
 </style>
+
 
 
 {% for project in site.data.image_data %}

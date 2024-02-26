@@ -1,59 +1,45 @@
 <style>
-    .image-gallery {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
+   .image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
+.image-gallery a {
+    flex-basis: calc(33.33% - 10px);
+    margin-bottom: 20px;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+.image-gallery a span {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 3px 0;
+}
+
+.image-gallery a img {
+    width: 100%;
+    display: block;
+    height: auto; /* Ensure images maintain aspect ratio */
+}
+
+/* Center the project title and description */
+.project {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
     .image-gallery a {
-        flex-basis: calc(33.33% - 10px);
-        margin-bottom: 20px;
-        text-align: center;
-        text-decoration: none !important;
+        flex-basis: calc(50% - 10px); /* Two images per row on smaller screens */
     }
+}
 
-    .image-gallery a span {
-        display: block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding: 3px 0;
-    }
-
-    .image-gallery a img {
-        width: 100%;
-        display: block;
-    }
-
-    /* Center the project title and description */
-    .project {
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    .image-gallery a span.caption {
-        display: block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding: 3px 0;
-        color: #000; /* Set the caption color to black */
-    }
-
-    /* Media query for mobile devices */
-    @media (max-width: 768px) {
-        .image-gallery a {
-            flex-basis: calc(50% - 10px); /* Adjust to 2 images per row */
-        }
-    }
-
-    @media (max-width: 480px) {
-        .image-gallery a {
-            flex-basis: 100%; /* Adjust to 1 image per row */
-        }
-    }
 </style>
-
 
 
 {% for project in site.data.image_data %}

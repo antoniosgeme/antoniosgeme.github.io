@@ -80,6 +80,7 @@ Here is a potential flow and conformal map calculator created for educational pu
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
+    width: 100%;
   }
 </style>
 

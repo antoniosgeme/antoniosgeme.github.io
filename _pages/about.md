@@ -73,13 +73,6 @@ Here is a potential flow and conformal map calculator created for educational pu
       top: 0;
       z-index: 2;
       background-color: white;
-      
-    }
-
-    #observablehq-KuttaButton-a125070b {
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: -10px; /* Shift the button to the left */
     }
   }
 

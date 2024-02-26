@@ -14,7 +14,9 @@ Nowadays, you can find me in the lab doing experiments in a water tank or wind t
 
 Here is a potential flow and conformal map calculator created for educational purposes (if you want more information on it see [this post](/posts/2023/11/blog-post-1/))
 
-<div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>
+<div id="kutta-button-container" style="display: flex; justify-content: center;">
+  <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>
+</div>
 
 <div id="plot-options-container">
   <div id="plot-container">
@@ -70,9 +72,17 @@ Here is a potential flow and conformal map calculator created for educational pu
       position: sticky;
       top: 0;
       z-index: 2;
+      background-color: white;
     }
   }
+
+  #kutta-button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
 </style>
+
 
 
 

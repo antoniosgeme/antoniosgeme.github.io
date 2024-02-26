@@ -65,6 +65,12 @@ Here is a potential flow and conformal map calculator created for educational pu
       margin-left: 0;
       margin-top: 10px;
     }
+
+    #plot-container {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
   }
 </style>
 

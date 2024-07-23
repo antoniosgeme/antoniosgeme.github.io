@@ -5,8 +5,8 @@
       caption: Static 2D PIV setup 
     - source: /images/gallery/IMG_9883.jpg
       caption: Static 3D PTV setup 
-    - source: /images/gallery/LEV.png
-      caption: Vorticity field during a wing-gust encounter
+    - source: /images/gallery/IMG_2302.jpg
+      caption: Characterization of the gust
 
 - project: Instrumented Wing Models
   description: These models are equipped with different types of sensors that allow unique unsteady flow measurements.

@@ -1,44 +1,65 @@
 <style>
-   .image-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.image-gallery a {
-    flex-basis: calc(33.33% - 10px);
-    margin-bottom: 20px;
-    text-align: center;
-    text-decoration: none !important;
-}
-
-.image-gallery a span {
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 3px 0;
-}
-
-.image-gallery a img {
-    width: 100%;
-    display: block;
-    height: auto; /* Ensure images maintain aspect ratio */
-}
-
-/* Center the project title and description */
-.project {
-    text-align: center;
-    margin: 0 auto;
-}
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    .image-gallery a {
-        flex-basis: calc(50% - 10px); /* Two images per row on smaller screens */
+    .image-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center all items in the gallery */
     }
-}
 
+    .image-gallery a {
+        flex-basis: calc(33.33% - 10px); /* Adjust this value to make images larger or smaller */
+        margin-bottom: 20px;
+        text-align: center;
+        text-decoration: none !important;
+    }
+
+    .image-gallery a span {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 3px 0;
+    }
+
+    .image-gallery a img {
+        width: 100%;
+        display: block;
+        height: auto; /* Ensure images maintain aspect ratio */
+    }
+
+    .video-container {
+        flex-basis: calc(100% - 10px); /* Adjust this value to make videos larger or smaller */
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .video-container video {
+        width: 100%; /* Adjust this value to make the video larger or smaller */
+        max-width: 1000px; /* Ensure the video does not exceed a certain width */
+        height: auto;
+    }
+
+    /* Center the project title and description */
+    .project {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+        .image-gallery a {
+            flex-basis: calc(50% - 10px); /* Two images per row on smaller screens */
+        }
+
+        .video-container {
+            flex-basis: 100%; /* Make videos occupy the full width */
+        }
+
+        .video-container video {
+            width: 100%; /* Make the video full width on smaller screens */
+        }
+    }
 </style>
 
 
@@ -54,10 +75,20 @@
                     {% if file.path == image.source %}  
                         {% assign filenameparts = file.path | split: "/" %}
                         {% assign filename = filenameparts | last | replace: file.extname,"" %}
-                        <a href="{{ file.path }}" title="{{ filename }}">
-                            <img src="//wsrv.nl/?url={{ site.url | replace: 'http://','' | replace: 'https://','' }}{{ file.path | relative_url }}&w=400&h=400&output=jpg&q=50&fit=cover" alt="{{ filename }}" />
-                            <span class="caption">{{ image.caption }}</span>
-                        </a>
+                        {% if file.extname == ".mp4" %}
+                            <div class="video-container">
+                                <video controls autoplay muted>
+                                    <source src="{{ file.path | relative_url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <span class="caption">{{ image.caption }}</span>
+                            </div>
+                        {% else %}
+                            <a href="{{ file.path }}" title="{{ filename }}">
+                                <img src="//wsrv.nl/?url={{ site.url | replace: 'http://','' | replace: 'https://','' }}{{ file.path | relative_url }}&w=400&h=400&output=jpg&q=50&fit=cover" alt="{{ filename }}" />
+                                <span class="caption">{{ image.caption }}</span>
+                            </a>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -65,22 +96,3 @@
     </div>
 </div>
 {% endfor %}
-
-<!--<div class="image-gallery">
-    {% for item in site.data.image_data %}
-        {% for file in site.static_files %}
-            {% if file.path contains include.folder %}
-                {% if file.path == item.source %}  
-                    {% assign filenameparts = file.path | split: "/" %}
-                    {% assign filename = filenameparts | last | replace: file.extname,"" %}
-                    <a href="{{ file.path }}" title="{{ filename }}">
-                        <img src="//wsrv.nl/?url={{ site.url | replace: 'http://','' | replace: 'https://','' }}{{ file.path | relative_url }}&w=400&h=400&output=jpg&q=50&fit=cover" alt="{{ filename }}" />
-                        <span class="caption">{{ item.caption }}</span>
-                    </a>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-</div>
-
--->

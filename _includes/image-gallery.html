@@ -80,7 +80,7 @@
                         {% assign filename = filenameparts | last | replace: file.extname,"" %}
                         {% if file.extname == ".mp4" %}
                             <div class="video-container">
-                                <video controls autoplay muted>
+                                <video controls autoplay muted loop>
                                     <source src="{{ file.path | relative_url }}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>

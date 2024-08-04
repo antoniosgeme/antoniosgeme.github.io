@@ -4,6 +4,11 @@
     - source: /images/gallery/GustEncounter.mp4
       caption: Experimental vorticty field and pressure distribution during a wing-gust encounter
 
+- project: Vortex Particle Modeling of Leading-Edge Separation
+  description : This project entails an investigation of the physics of wing-gust encounters and gust alleviation control methods. 
+  images:
+    - source: /images/gallery/GR100_Model.mp4
+      caption: Experimental vorticty field and pressure distribution during a wing-gust encounter
 
 - project: Particle Image Velocimetry (PIV)
   description : These are some examples different PIV and PTV experiments conducted at the STAL tow-tank. 

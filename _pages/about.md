@@ -8,10 +8,11 @@ redirect_from:
   - /about.html
 ---
 
-Greetings! I am a PhD Candidate in the Department of Aerospace Engineering at the University of Maryland, where I'm fortunate to conduct research under the guidance of [Dr. Anya Jones](https://aero.umd.edu/clark/faculty/40/Anya-R-Jones) in the [Separated and Transient Aerodynamics Laboratory (STAL)](http://stal.umd.edu/). My research revolves around the realms of unsteady aerodynamics, control theory, and optimization and is primarily aimed at addressing challenges in the aerospace engineering and renewable energy sectors. 
+Greetings! I am a PhD Candidate in the Department of Aerospace Engineering at the University of Maryland, conducting research under the guidance of [Dr. Anya Jones](https://aero.umd.edu/clark/faculty/40/Anya-R-Jones) in the [Separated and Transient Aerodynamics Laboratory (STAL)](http://stal.umd.edu/). My research revolves around the realms of unsteady aerodynamics, control theory, and optimization and is primarily aimed at addressing challenges in the aerospace engineering and renewable energy sectors. If you would like to see some of my current and past projects, please visit my [Portfolio page](/gallery)
 
-Nowadays, you can find me in the lab doing experiments in a water tank or wind tunnel facility, or developing aerodynamics related software. Previously, I earned a Master's in aeronautical engineering from the University of Cambridge and a Bachelor's in mechanical engineering from New York University. 
+Nowadays, I spend most of my time in the lab doing experiments in a water tank or wind tunnel facility, or developing low-fidelity aerodynamics analysis and optimization tools. Previously, I earned a Master's in aeronautical engineering from the University of Cambridge and a Bachelor's in mechanical engineering from New York University. 
 
+Below you will find a potential flow / conformal map calculator written JavaScript for an undergraduate Aerodynamics course. If you are interested about its inner workings see [this post](/posts/2023/11/blog-post-1)
 
 <div id="kutta-button-container" style="display: flex; justify-content: center;">
   <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>

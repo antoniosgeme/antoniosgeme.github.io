@@ -6,11 +6,11 @@ REM echo Extracting and processing references from google scholar...
 REM call python assets\python\export_google_scholar.py
 
 REM This function recognizes APS abstracts and add a keyword "abstract" to be recoognized by the other programs
-call python assets\python\bib_process.py
+REM call python assets\python\bib_process.py
 
 REM This function turns the bib file to a yml file to be read by the website
 echo Updating YAML file...
-call python assets\python\bib_to_yml.py
+REM call python assets\python\bib_to_yml.py
 
 REM Specify the full or relative path to your LaTeX CV document (including the .tex extension)
 SET CV_DOCUMENT_PATH=assets\CV\CV_AntoniosG.tex

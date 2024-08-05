@@ -5,10 +5,20 @@
       caption: Experimental vorticity field and pressure distribution during a wing-gust encounter
 
 - project: Vortex Particle Modeling of Leading-Edge Separation
-  description : Combining traditional panel methods with vorticity representations of unsteady flows results in powerful simulations that balance modeling fidelity with computational complexity. This work seeks to extend this class of methods to flows involving boundary-layer separation and leading-edge vortex formation. 
+  description : Combining traditional panel methods with vorticity representations of unsteady flows results in powerful simulations that balance modeling fidelity with computational complexity. This work extends this class of methods to flows involving boundary-layer separation and leading-edge vortex formation. 
   images:
     - source: /images/gallery/GR100_ModelLoad.mp4
       caption: Unsteady vortex particle simulation of a wing-gust encounter
+
+- project: Flow Sensing and Control
+  description: Aircraft flying in highly unsteady conditions, wind-turbines experiencing turbulent fluctuations of the atmospheric boundary layer, and robotic fish navigating unknown flowfields are examples of systems that operate in unsteady flow environments. This research project seeks to enhance the decision-ability of these systems by investigating novel sensing concepts. Emphasis is placed on utilizing unsteady potential flow theory to infer shed vorticity distributions from pressure measurements.
+  images:
+    - source: /images/gallery/IMG_8485.jpg
+      caption: Testing of instrumented model 
+    - source: /images/gallery/dark_wing_high_res.jpg
+      caption: Rendering of an instrumented model
+    - source: /images/gallery/WingInside.jpg
+      caption: Sensors inside the wing model
 
 - project: Time-Resolved and 3D Particle Velocimetry
   description : When studying unsteady flows we are often interested in the transient rather than the time-averaged behavior of systems. Modern Particle Image Velocimetry (PIV) techniques allow us to conduct time-resolved experiments, while recent advances in particle tracking allows us to measure flow motion in 3 dimensions. 
@@ -19,17 +29,6 @@
       caption: 3D PTV setup 
     - source: /images/gallery/IMG_2302.jpg
       caption: Characterization of the gust
-
-- project: Instrumented Wing Models
-  description: These models are equipped with different types of sensors that allow unique unsteady flow measurements.
-  images:
-    - source: /images/gallery/IMG_8485.jpg
-      caption: Testing of instrumented model 
-    - source: /images/gallery/dark_wing_high_res.jpg
-      caption: Rendering of an instrumented model
-    - source: /images/gallery/WingInside.jpg
-      caption: Sensors inside the wing model
-
 
 - project: Vortex Breakdown
   description : Vortex breakdown is a physical process that lies at the heart of engineered systems such as delta wings and gas turbine combustion chambers. This project seeks to unravel the physics and stability characteristics of vortices undergoing breakdown in the presence of non-isothermal inflows. This work was led by Assaf Krupnik.

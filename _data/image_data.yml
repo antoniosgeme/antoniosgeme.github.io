@@ -1,22 +1,22 @@
-- project: Wing-Gust Encounters
-  description : This project entails an investigation of the physics of wing-gust encounters and gust alleviation control methods. 
+- project: Aerodynamics of Wing-Gust Encounters
+  description : Large force transients produced during atmospheric gust encounters can lead to aircraft structural damage or catastrophic loss of control. This project entails an investigation of the physics of wing-gust encounters as well as the development of load prediction tools for unsteady, post-stall aerodynamics. 
   images:
     - source: /images/gallery/GustEncounter.mp4
-      caption: Experimental vorticty field and pressure distribution during a wing-gust encounter
+      caption: Experimental vorticity field and pressure distribution during a wing-gust encounter
 
 - project: Vortex Particle Modeling of Leading-Edge Separation
-  description : This project entails an investigation of the physics of wing-gust encounters and gust alleviation control methods. 
+  description : Combining traditional panel methods with vorticity representations of unsteady flows results in powerful simulations that balance modeling fidelity with computational complexity. This work seeks to extend this class of methods to flows involving boundary-layer separation and leading-edge vortex formation. 
   images:
-    - source: /images/gallery/GR100_Model.mp4
-      caption: Experimental vorticty field and pressure distribution during a wing-gust encounter
+    - source: /images/gallery/GR100_ModelLoad.mp4
+      caption: Unsteady vortex particle simulation of a wing-gust encounter
 
-- project: Particle Image Velocimetry (PIV)
-  description : These are some examples different PIV and PTV experiments conducted at the STAL tow-tank. 
+- project: Time-Resolved and 3D Particle Velocimetry
+  description : When studying unsteady flows we are often interested in the transient rather than the time-averaged behavior of systems. Modern Particle Image Velocimetry (PIV) techniques allow us to conduct time-resolved experiments, while recent advances in particle tracking allows us to measure flow motion in 3 dimensions. 
   images:
     - source: /images/gallery/IMG_4002.jpg
-      caption: Static 2D PIV setup 
+      caption: Static PIV setup 
     - source: /images/gallery/IMG_9883.jpg
-      caption: Static 3D PTV setup 
+      caption: 3D PTV setup 
     - source: /images/gallery/IMG_2302.jpg
       caption: Characterization of the gust
 
@@ -32,11 +32,11 @@
 
 
 - project: Vortex Breakdown
-  description : Experimental investigation of vortex bubble breakdown
+  description : Vortex breakdown is a physical process that lies at the heart of engineered systems such as delta wings and gas turbine combustion chambers. This project seeks to unravel the physics and stability characteristics of vortices undergoing breakdown in the presence of non-isothermal inflows. This work was led by Assaf Krupnik.
   images:
-    - source: /images/gallery/IMG_7257.jpg
+    - source: /images/gallery/PTV_Setup.jpg
       caption: Experimental apparatus
-    - source: /images/gallery/IMG_7256.jpg
-      caption: PIV setup
+    - source: /images/gallery/IMG_7257.jpg
+      caption: PTV experiment
     - source: /images/gallery/Bubble.jpg
-      caption: Picture of a bubble vortex breakdown
+      caption: Smoke flow visualization of bubble vortex breakdown

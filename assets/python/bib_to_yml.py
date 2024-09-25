@@ -5,7 +5,7 @@ import requests
 def main():
 
     # Load the BibTeX file
-    with open('assets\\CV\\references.bib', 'r', encoding='utf-8') as bibtex_file:
+    with open('assets/CV/references.bib', 'r', encoding='utf-8') as bibtex_file:
         bib_database = bibtexparser.load(bibtex_file)
 
     # Convert each entry to a dictionary

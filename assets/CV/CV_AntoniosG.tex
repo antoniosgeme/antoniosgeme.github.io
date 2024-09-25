@@ -151,9 +151,8 @@
         University Space Research Association (USRA) Intern \\
         
     \vspace{1.5mm}
-        This project is aimed at instrument development for the NASA Storm Time O+ Ring current
-        Imaging Evolution (STORIE) mission. Emphasis is placed on the development of software to quantify measurement uncertainty of the
-        Energetic Neutral Atom imager using Monte-Carlo methods, as well as the development of data visualization tools to analyze real-time data feed from the International Space Station. \\\
+        This project seeks to develop Monte Carlo uncertainty quantification tools as well as data visualization software, for the Energetic Neutral Atom (ENA) imager. This effort is part of the NASA Storm Time O+ Ring current
+        Imaging Evolution (STORIE) mission. \\\
 
         \item[2020--]   \tab{}Separated and Transient Aerodynamics Laboratory (STAL) \\ 
         University of Maryland, College Park \\ 
@@ -162,7 +161,7 @@
   \vspace{1.5mm}
         This dissertation encompasses an experimental investigation of the aerodynamics of wing-gust encounters as well as the development of lift regulation strategies for gust load alleviation. 
         Emphasis is placed on simultaneous measurement of the load transients, unsteady pressure distributions and flowfields associated with trasnsverse gust encounters, as well as the incorporation 
-        of flow sensing information in estimation and control.         
+        of flow sensing information in estimation and control frameworks. \\\
                         
 
 		\item[2021--]   \tab{}NATO Applied Vehicle Technology (AVT) Panel \\ 
@@ -213,14 +212,24 @@ predicting Low Frequency Rumble (LFR) in aviation gas turbines, by characterizin
     
     \subsection*{Journal Articles}
         \nocite{*}
-        \printbibliography[type=article,heading=none,resetnumbers, notkeyword=abstract,nottype=url,nottype=doi]
+        \newrefcontext[sorting=ydnt] % Sorting by year (descending), name, title
+        \printbibliography[type=article,
+        heading=none,
+        resetnumbers, 
+        notkeyword=abstract,
+        nottype=url,
+        nottype=doi]
 
     \subsection*{Conference Articles}
         \nocite{*}
+        \newrefcontext[sorting=ydnt]
         \printbibliography[type=inproceedings, heading=none, resetnumbers, notkeyword=abstract,nottype=url,nottype=doi]
 
-     %\subsection*{Conference Abstracts}
-        %\nocite{*}
+     \subsection*{Conference Abstracts}
+        \nocite{*}
+        \newrefcontext[sorting=ydnt]
+        \printbibliography[heading=none, resetnumbers, keyword=abstract, nottype=url, nottype=doi]
+
         %\printbibliography[heading=none, resetnumbers, keyword=abstract,nottype=url,nottype=doi]
     
     

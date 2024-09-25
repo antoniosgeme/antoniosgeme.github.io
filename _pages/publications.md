@@ -8,7 +8,7 @@ author_profile: true
 <div class="publications-list">
   <h2>Journal Articles</h2>
   <ol>
-    {% assign journalPublications = site.data.publications | where: 'type', 'journal' %}
+    {% assign journalPublications = site.data.publications | where: 'type', 'journal' | sort: 'year' | reverse %}
     {% for publication in journalPublications %}
       <li>
         <p>
@@ -62,7 +62,7 @@ author_profile: true
 
   <h2>Conference Articles</h2>
   <ol>
-    {% assign conferencePublications = site.data.publications | where: 'type', 'conference' %}
+    {% assign conferencePublications = site.data.publications | where: 'type', 'conference' | sort: 'year' | reverse %}
     {% for publication in conferencePublications %}
       <li>
         <p>
@@ -113,7 +113,7 @@ author_profile: true
 
   <h2>Conference Abstracts</h2>
   <ol>
-    {% assign abstractPublications = site.data.publications | where: 'type', 'abstract' %}
+   {% assign abstractPublications = site.data.publications | where: 'type', 'abstract' | sort: 'year' | reverse %}
     {% for publication in abstractPublications %}
       <li>
         <p>

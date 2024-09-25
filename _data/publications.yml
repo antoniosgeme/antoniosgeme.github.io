@@ -106,8 +106,26 @@
   volume: '9'
   year: '2024'
 - author: Wild, Oliver and Gementzopoulos, Antonios and Jones, Anya
+  doi: 10.2514/6.2024-1120
   pages: '1120'
   title: 'Navigating unsteady airwakes: Three-dimensionality and sideslip in strong
     transverse gust encounters'
   type: conference
+  year: '2024'
+- author: Gementzopoulos, Antonios and Wild, Oliver and Jones, Anya
+  journal: Under Review
+  title: Flow sensing through unsteady pressure measurements during transverse wing-gust
+    encounters
+  type: journal
+  year: '2024'
+- author: Wild, Oliver and Gementzopoulos, Antonios and Jones, Anya
+  journal: Under Review
+  title: Three-dimensionality of sideslip wings in strong transverse gust encounters
+  type: journal
+  year: '2024'
+- author: Gementzopoulos, Antonios and Wild, Oliver and Jones, Anya
+  journal: Bulletin of the American Physical Society
+  publisher: APS
+  title: Measuring leading-edge vortex circulation using a leading-edge pressure sensor
+  type: abstract
   year: '2024'

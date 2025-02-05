@@ -8,9 +8,13 @@ redirect_from:
   - /about.html
 ---
 
-Greetings! I am a PhD Candidate in the Department of Aerospace Engineering at the University of Maryland, conducting research under the guidance of [Dr. Anya Jones](https://aero.umd.edu/clark/faculty/40/Anya-R-Jones) in the [Separated and Transient Aerodynamics Laboratory (STAL)](http://stal.umd.edu/). My research revolves around the realms of unsteady aerodynamics, control theory, and optimization and is primarily aimed at addressing challenges in the aerospace engineering and renewable energy sectors. If you would like to see some of my current and past projects, please visit my [Portfolio page](/gallery)
+I am currently a Postdoctoral Associate in the High-Speed Aerodynamics and Propulsion Laboratory ([HAPL](http://www.hyper.umd.edu/index.html)) at the University of Maryland. I completed my PhD at the University of Maryland under the guidance of [Dr. Anya Jones](https://samueli.ucla.edu/people/anya-jones/) in the [Separated and Transient Aerodynamics Laboratory (STAL)](https://stal.seas.ucla.edu/). Before my doctoral studies, I earned a Master’s in Aeronautical Engineering from the University of Cambridge and a Bachelor’s in Mechanical Engineering from New York University. 
 
-Nowadays, I spend most of my time in the lab doing experiments in a water tank or wind tunnel facility, or developing low-fidelity aerodynamics analysis and optimization tools. Previously, I earned a Master's in aeronautical engineering from the University of Cambridge and a Bachelor's in mechanical engineering from New York University. 
+# Research
+
+I am broadly interested in the aerodynamic challenges facing next-generation flight vehicles. My current research centers on understanding the impact of surface irregularities on hypersonic vehicles, with a particular emphasis on the heat-flux penalty imposed by surface roughness in turbulent boundary layers. During my doctoral studies, I investigated the unsteady aerodynamics of wing-gust encounters, focusing on estimation and control methods for effective gust mitigation.
+To learn more about my current and past projects, please visit my [Portfolio page](/gallery).
+
 
 <div id="kutta-button-container" style="display: flex; justify-content: center;">
   <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>

@@ -82,7 +82,7 @@ analytics:
 author:
   name             : "Antonios Gementzopoulos"
   avatar           : "FaceShot_small.jpg"
-  bio              : "PhD Candidate <br> Aerodynamics Researcher"
+  bio              : Postdoctoral Associate <br> Aerodynamics Researcher"
   location         : "Washington, DC"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
@@ -109,7 +109,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "antoniosgeme"
+  x                : "antoniosgeme"
   vine             :
   weibo            :
   xing             :

@@ -13,7 +13,6 @@ I am currently a Postdoctoral Associate in the High-Speed Aerodynamics and Propu
 # Research
 
 I am broadly interested in the aerodynamic challenges facing next-generation flight vehicles. My current research centers on understanding the impact of surface irregularities on hypersonic vehicles, with a particular emphasis on the heat-flux penalty imposed by surface roughness in turbulent boundary layers. During my doctoral studies, I investigated the unsteady aerodynamics of wing-gust encounters, focusing on estimation and control methods for effective gust mitigation.
-To learn more about my current and past projects, please visit my [Portfolio page](/gallery).
 
 
 <div id="kutta-button-container" style="display: flex; justify-content: center;">

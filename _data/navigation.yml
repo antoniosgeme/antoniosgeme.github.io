@@ -1,7 +1,18 @@
 # main links links
 main:
-  #- title: "Publications"
-    #url: /publications/
+
+  #- title: "CV"
+    #url: /wholeCV/
+
+  - title: "Publications"
+    url: /publications/
+
+  - title: "Gallery"
+    url: /gallery/
+  
+  - title: "Blog Posts"
+    url: /year-archive/
+    
 
   #- title: "Talks"
   #  url: /talks/    
@@ -16,15 +27,7 @@ main:
     #url: /assets/CV/CV_AntoniosG.pdf
     #target: _blank
 
-  - title: "CV"
-    url: /wholeCV/
-
-  - title: "Gallery"
-    url: /gallery/
-  
-  - title: "Blog Posts"
-    url: /year-archive/
-    
+ 
     
   #- title: "Guide"
   #  url: /markdown/

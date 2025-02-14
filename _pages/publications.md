@@ -5,6 +5,9 @@ permalink: /publications/
 author_profile: true
 ---
 
+[**Download PDF Version of CV**]( /assets/CV/CV_AntoniosG.pdf){: .btn}
+
+
 <div class="publications-list">
   <h2>Journal Articles</h2>
   <ol>

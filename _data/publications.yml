@@ -113,11 +113,13 @@
   type: conference
   year: '2024'
 - author: Gementzopoulos, Antonios and Wild, Oliver and Jones, Anya
-  journal: Under Review
-  title: Flow sensing through unsteady pressure measurements during transverse wing-gust
-    encounters
+  doi: 10.1007/s00348-025-03992-4
+  journal: Experiments in Fluids
+  pages: '52'
+  title: Flow sensing through unsteady pressure measurements during transverse wing–gust encounters
   type: journal
-  year: '2024'
+  volume: '66'
+  year: '2025'
 - author: Wild, Oliver and Gementzopoulos, Antonios and Jones, Anya
   journal: Under Review
   title: Three-dimensionality of sideslip wings in strong transverse gust encounters

@@ -139,6 +139,9 @@ exclude:
   - assets/js/_main.js
   - assets/js/plugins
   - assets/js/vendor
+  - assets/bokeh/*.html
+  - assets/js/blog1/*.html
+  - assets/plotly/*.html
   - config
   - gulpfile.js
   - log
@@ -309,3 +312,11 @@ compress_html:
   clippings: all
   ignore:
     envs: development
+
+# Sitemap settings
+sitemap:
+  exclude:
+    - "/assets/bokeh/"
+    - "/assets/js/blog1/"
+    - "/assets/plotly/"
+    - "/markdown_generator/"

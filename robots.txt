@@ -1,0 +1,36 @@
+User-agent: *
+
+# Disallow development and test pages
+Disallow: /markdown/
+Disallow: /non-menu-page/
+Disallow: /archive-layout-with-content/
+Disallow: /page-archive/
+Disallow: /collection-archive/
+
+# Disallow asset directories not meant for indexing
+Disallow: /assets/bokeh/
+Disallow: /assets/js/blog1/
+Disallow: /assets/plotly/
+Disallow: /assets/js/CircleVec.html
+
+# Disallow build and development directories
+Disallow: /_site/
+Disallow: /markdown_generator/
+Disallow: /.sass-cache/
+Disallow: /.jekyll-cache/
+
+# Disallow files that are demos or have broken links
+Disallow: /files/paper1.pdf
+Disallow: /files/paper2.pdf
+
+# Allow important academic content
+Allow: /
+Allow: /publications/
+Allow: /gallery/
+Allow: /year-archive/
+Allow: /cv/
+Allow: /wholeCV/
+Allow: /assets/CV/
+
+# Point to sitemap
+Sitemap: https://antoniosgeme.com/sitemap.xml

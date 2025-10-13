@@ -8,101 +8,98 @@ redirect_from:
   - /about.html
 ---
 
-I am currently a Postdoctoral Associate in the High-Speed Aerodynamics and Propulsion Laboratory ([HAPL](http://www.hyper.umd.edu/index.html)) at the University of Maryland. I completed my PhD at the University of Maryland under the guidance of [Dr. Anya Jones](https://samueli.ucla.edu/people/anya-jones/) in the [Separated and Transient Aerodynamics Laboratory (STAL)](https://stal.seas.ucla.edu/). Before my doctoral studies, I earned a Master’s in Aeronautical Engineering from the University of Cambridge and a Bachelor’s in Mechanical Engineering from New York University. 
+I am a Postdoctoral Associate at the University of Maryland's [High-Speed Aerodynamics and Propulsion Laboratory (HAPL)](http://www.hyper.umd.edu/index.html). I recently completed my PhD in Aerospace Engineering at the University of Maryland under the guidance of [Dr. Anya Jones](https://stal.seas.ucla.edu/). My research examines the fluid-mechanical phenomena that underpin the performance and design of next-generation flight and energy systems. Broadly, my work explores fundamental questions in unsteady aerodynamics and vorticity-dominated flows, high-speed turbulent boundary layer physics, and the interplay between aerodynamics, sensing, and control.
 
-# Research
+**Education:**
+- **Ph.D. Aerospace Engineering**, University of Maryland (2025)
+- **M.Res. Aeronautical Engineering**, University of Cambridge (2019)
+- **B.S. Mechanical Engineering**, New York University (2018)
 
-I am broadly interested in the aerodynamic challenges facing next-generation flight vehicles. My current research centers on understanding the impact of surface irregularities on hypersonic vehicles, with a particular emphasis on the heat-flux penalty imposed by surface roughness in turbulent boundary layers. During my doctoral studies, I investigated the unsteady aerodynamics of wing-gust encounters, focusing on estimation and control methods for effective gust mitigation.
+---
 
+<section class="gallery-section" id="gallery">
+  <h3>Gallery</h3>
 
-<div id="kutta-button-container" style="display: flex; justify-content: center;">
-  <div id="observablehq-KuttaButton-a125070b" style="margin-bottom: 10px; margin-left: 20px;"></div>
-</div>
-
-<div id="plot-options-container">
-  <div id="plot-container">
-    <div id="observablehq-viewof-gl-a125070b"></div>
-    <div id="observablehq-viewof-options-a125070b"></div>
+  <!-- Hero video (optional) -->
+  <div class="gallery-hero">
+    <video autoplay muted loop playsinline>
+      <source src="/images/gallery/GustEncounter.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
-  <div id="options-container"> 
-    <div id="observablehq-viewof-flowSelection-a125070b"></div>
-    <div id="observablehq-viewof-alpha_deg-a125070b"></div>
-    <div id="observablehq-viewof-U-a125070b"></div>
-    <div id="observablehq-viewof-Gamma-a125070b"></div>
-    <div id="observablehq-viewof-Kappa-a125070b"></div>
-    <div id="observablehq-viewof-shift-a125070b"></div>
-    <div id="observablehq-viewof-shift_vertical-a125070b"></div>
+  <!-- Two-per-row image grid -->
+  <div class="gallery-grid">
+    <figure class="card">
+      <img class="media" src="/images/gallery/Bubble.jpg" alt="Bubble flow dynamics" loading="lazy">
+      <figcaption>Smoke visualization of bubble burst</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/IMG_9883.jpg" alt="Experimental setup" loading="lazy">
+      <figcaption>Particle Tracking Velocimetry</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/breakdown.png" alt="Breakdown visualization" loading="lazy">
+      <figcaption>Bubble breakdown pathlines</figcaption>
+    </figure>
+    <figure class="card">
+      <video class="media" autoplay muted loop playsinline>
+        <source src="/images/gallery/temperature_field_web.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <figcaption>IR Thermography</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/PEEKcone.jpg" alt="Hypersonic test model (PEEK cone)" loading="lazy">
+      <figcaption>Cone-flare hypersonics model</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/dark_wing_high_res.jpg" alt="High-resolution wing model" loading="lazy">
+      <figcaption>Instrumented wing model</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/IMG_4002.jpg" alt="Laboratory instrumentation" loading="lazy">
+      <figcaption>PIV during a gust encounter</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/IMG_7257.jpg" alt="Research facility" loading="lazy">
+      <figcaption>PIV of bubble burst breakdown</figcaption>
+    </figure>
+    <!-- Optional extras
+    <figure class="card">
+      <img class="media" src="/images/gallery/Temps.png" alt="IR thermography capabilities" loading="lazy">
+      <figcaption>IR thermography capabilities</figcaption>
+    </figure>
+    <figure class="card">
+      <img class="media" src="/images/gallery/Schileren2.gif" alt="Schlieren flow visualization" loading="lazy">
+      <figcaption>Schlieren flow visualization</figcaption>
+    </figure>
+    -->
   </div>
-</div>
+</section>
+
+
+---
 
 <style>
-  #wrapper {
-    height: 1000px;
-  }
-
-  #plot-options-container {
-    display: flex;
-    align-items: flex-start;
-    position: static;
-    top: 0;
-    background-color: white;
-    z-index: 1;
-  }
-
-  #plot-container {
-    flex: 1;
-  }
-
-  #options-container {
-    flex: 1;
-    margin-left: 10px;
-  }
-
-  /* Media query for mobile devices */
-  @media (max-width: 768px) {
-    #plot-options-container {
-      flex-direction: column;
-    }
-
-    #options-container {
-      margin-left: 0;
-      margin-top: 10px;
-    }
-
-    #plot-container {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background-color: white;
-    }
-  }
-
-  #kutta-button-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    width: 100%;
-  }
+.gallery-section{
+  background:#fff;border:1px solid #e1e5e9;border-left:4px solid #3498db;
+  border-radius:12px;padding:24px;margin:32px 0
+}
+.gallery-section h3{margin:0 0 20px;text-align:center;color:#2c3e50;font-size:1.35rem}
+.gallery-hero{display:grid;place-items:center;margin-bottom:22px}
+.gallery-hero video{width:100%;max-width:780px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px
+}
+/* Uniform tiles */
+.card{background:#fff;border:1px solid #eef1f4;border-radius:10px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.card .media{width:100%;aspect-ratio:4/3;display:block}
+.card img.media{object-fit:cover}
+.card video.media{object-fit:cover;background:transparent}
+.card figcaption{font-size:.9rem;color:#606b78;text-align:center;padding:10px 12px}
+/* Keep 2 per row even on smaller screens; drop to 1 only when extremely narrow */
+@media (max-width:520px){
+  .gallery-grid{grid-template-columns:1fr}
+}
 </style>
 
-
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
-<script type="module">
-import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-import define from "https://api.observablehq.com/d/6a13ba7040fa6e52@2064.js?v=4";
-new Runtime().module(define, name => {
-  if (name === "viewof gl") return new Inspector(document.querySelector("#observablehq-viewof-gl-a125070b"));
-  if (name === "viewof flowSelection") return new Inspector(document.querySelector("#observablehq-viewof-flowSelection-a125070b"));
-  if (name === "viewof alpha_deg") return new Inspector(document.querySelector("#observablehq-viewof-alpha_deg-a125070b"));
-  if (name === "viewof U") return new Inspector(document.querySelector("#observablehq-viewof-U-a125070b"));
-  if (name === "viewof Gamma") return new Inspector(document.querySelector("#observablehq-viewof-Gamma-a125070b"));
-  if (name === "viewof Kappa") return new Inspector(document.querySelector("#observablehq-viewof-Kappa-a125070b"));
-  if (name === "viewof shift") return new Inspector(document.querySelector("#observablehq-viewof-shift-a125070b"));
-  if (name === "viewof shift_vertical") return new Inspector(document.querySelector("#observablehq-viewof-shift_vertical-a125070b"));
-  if (name === "viewof options") return new Inspector(document.querySelector("#observablehq-viewof-options-a125070b"));
-  if (name === "KuttaButton") return new Inspector(document.querySelector("#observablehq-KuttaButton-a125070b"));
-  return ["programInfo","render","executeMultipleFunctions","values","radius","AirfoilButton","x_te","Kutta_circulation","initialGrid","beta","values_uniform","values_vortex","values_doublet","grid","values_uniform_doublet","values_uniform_vortex","values_uniform_vortex_doublet","values_vortex_doublet","AirfoilButtonList","alpha","transform","body"].includes(name);
-});
-</script>

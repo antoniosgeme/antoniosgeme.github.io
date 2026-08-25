@@ -1,2 +1,4 @@
 _site/
 keys_and_pw.txt
+node_modules/
+.DS_Store

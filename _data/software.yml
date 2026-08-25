@@ -1,17 +1,42 @@
-- title: "AeroInviscid.jl"
-  repo_url: "https://github.com/antoniosgeme/AeroInviscid.jl"
+- title: "Wingman.jl"
+  repo_url: "https://github.com/antoniosgeme/Wingman.jl"
+  description: "Differentiable aircraft design optimization in Julia. Geometry, aerodynamics, structures, propulsion, atmosphere, and weights models feed an optimization front end, with exact gradients flowing through the whole stack by automatic differentiation."
   topics:
     - Julia
-    - Aerodynamics
+    - Design Optimization
+    - Automatic Differentiation
+
+- title: "UniformStreamlines.jl"
+  repo_url: "https://github.com/antoniosgeme/UniformStreamlines.jl"
+  description: "Evenly spaced streamlines for 2-D, 3-D, and N-D vector fields using the Jobard–Lefer algorithm. Works with function-defined and grid-defined velocity fields, with recipes for Plots.jl and Makie.jl."
+  topics:
+    - Julia
+    - Flow Visualization
 
 - title: "AeroGeometry.jl"
   repo_url: "https://github.com/antoniosgeme/AeroGeometry.jl"
+  description: "Airfoil and aircraft geometry for Julia: construction, transformation, and discretization of lifting surfaces. Provides the geometry core that Wingman.jl builds on."
   topics:
     - Julia
     - Geometry
 
-- title: "UniformStreamlines.jl"
-  repo_url: "https://github.com/antoniosgeme/UniformStreamlines.jl"
+- title: "EulerSolver.jl"
+  repo_url: "https://github.com/antoniosgeme/EulerSolver.jl"
+  description: "A small, readable 2-D Euler solver for external flow over an airfoil. Wraps the airfoil in a structured C-grid and time marches a finite-volume scheme to steady state, kept simple enough to read and extend."
   topics:
     - Julia
-    - Flow Visualization
+    - CFD
+
+- title: "Construct2D.jl"
+  repo_url: "https://github.com/antoniosgeme/Construct2D.jl"
+  description: "Pure-Julia structured grid generator for 2-D airfoils, ported from Construct2D. Meshes an airfoil with no Fortran toolchain, external binary, or process I/O."
+  topics:
+    - Julia
+    - Mesh Generation
+
+- title: "AeroInviscid.jl"
+  repo_url: "https://github.com/antoniosgeme/AeroInviscid.jl"
+  description: "Lightweight 2-D inviscid aerodynamics: a linear vortex panel method for single- and multi-element airfoils, with plotting recipes for pressure coefficient and streamlines."
+  topics:
+    - Julia
+    - Aerodynamics

@@ -18,8 +18,9 @@ redirect_from:
 ## Research Experience
 
 - **University of Maryland, College Park**  
-  *Postdoctoral Associate, Department of Aerospace Engineering (2020–2025)*  
+  *Postdoctoral Associate, Department of Aerospace Engineering (2025–present)*  
   **Laboratory:** High-Speed Aerodynamics and Propulsion Laboratory (HAPL)  
+  **Supervisor:** Dr. Stuart Laurence  
 
 - **University of Maryland, College Park**    
   *Graduate Research Assistant, Department of Aerospace Engineering (2020–2025)*  
@@ -31,6 +32,7 @@ redirect_from:
   *Intern, University Space Research Association (USRA) (2024)*
 
 - **NATO Applied Vehicle Technology (AVT) Panel**  
+  *Technical Team Member, AVT–426 (2026–present)*  
   *Technical Team Member, AVT–347: Large-amplitude gust mitigation strategies for rigid wings (2021–2024)*
 
 - **Whittle Laboratory, University of Cambridge**  
@@ -39,6 +41,18 @@ redirect_from:
 
 - **Dynamical Systems Laboratory, New York University (Tandon School of Engineering)**  
   *Undergraduate Researcher (2016–2018)*
+
+## Professional Service
+
+- **Reviewer**, *Journal of Fluid Mechanics* (2026)
+- **Reviewer**, *Scientific Reports* (2026)
+
+## Mentoring
+
+- **National Security Scholars Summer Internship Program (NSSSIP)**  
+  *Research Mentor, University of Maryland and Army DEVCOM Army Research Laboratory (Summer 2026)*  
+  Mentored a four-student intern team through a ten-week research program; the team's
+  work was recommended for the program's Project of the Year award.
 
 <div class="publications-list">
 

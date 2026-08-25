@@ -20,16 +20,27 @@
 <script>
 (function () {
   // Same-origin, so the frame can be measured directly and sized to its content.
+  // Measure the body, not documentElement: once we set a height, the frame's viewport
+  // grows to match and documentElement.scrollHeight can never report a smaller value.
   function fit(fr) {
     try {
       var d = fr.contentDocument;
-      if (d && d.documentElement) fr.style.height = Math.ceil(d.documentElement.scrollHeight) + "px";
+      if (!d || !d.body) return;
+      var h = Math.max(d.body.scrollHeight, d.body.offsetHeight);
+      if (h > 0 && Math.abs(h - parseFloat(fr.style.height || 0)) > 1) {
+        fr.style.height = Math.ceil(h) + "px";
+      }
     } catch (e) { /* leave the CSS min-height in place */ }
   }
   function watch(fr) {
     fit(fr);
     setTimeout(function () { fit(fr); }, 250);   // after webfonts settle
-    if (window.ResizeObserver) new ResizeObserver(function () { fit(fr); }).observe(fr.parentElement);
+    if (!window.ResizeObserver) return;
+    new ResizeObserver(function () { fit(fr); }).observe(fr.parentElement);
+    try {
+      // the demo relayouts on width changes and can also get shorter
+      new ResizeObserver(function () { fit(fr); }).observe(fr.contentDocument.body);
+    } catch (e) {}
   }
   function init() {
     Array.prototype.forEach.call(document.querySelectorAll(".demo__frame"), function (fr) {

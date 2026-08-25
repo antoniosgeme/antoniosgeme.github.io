@@ -1,83 +1,126 @@
 ---
 layout: single
-title: "Potential flow: building a wing out of nothing"
+title: "Potential Flows and Conformal Maps"
 permalink: /teaching/potential-flow/
 author_profile: true
+redirect_from:
+  - /posts/2023/11/blog-post-1/
 ---
 
-Incompressible, irrotational flow obeys Laplace's equation, and Laplace's equation is linear. That single
-fact is what most of classical aerodynamics is built on: complicated flows can be assembled by adding
-simple ones together. Drag the sliders below and watch a cylinder, and then a lifting airfoil, appear out
-of three elementary solutions.
+The goal here is to gain some familiarity and visual intuition of how conformal maps work and how they are
+used in the theory of aerodynamics. The flows are rendered per pixel with WebGL, directly in the page below.
 
-{% include demo.html src="/assets/demos/potential-flow.html" title="Potential flow sandbox" %}
+{% include demo.html src="/assets/demos/potential-flow.html" title="Potential flow and conformal map sandbox" %}
 
-Color is the pressure coefficient $C_p$ — red where the flow runs fast and the pressure drops, blue-violet
-where it stagnates. The white contours are streamlines.
+## Potential Flow
 
-## Why we are allowed to just add flows together
+We will focus on fluid flows whose velocity fields can be written as gradients of scalar potentials,
+$\mathbf{u} = \nabla \phi$. Conservation of mass for incompressible fluids, $\nabla \cdot \mathbf{u}= 0$
+implies that the scalar potential satisfies Laplace's equation $\nabla^2 \phi = 0$. Thus, we can create
+potential flows using solutions of Laplace's equation, called
+[harmonic functions](https://en.wikipedia.org/wiki/Harmonic_function), and which are mathematically well
+understood. Harmonic functions are also linearly superimposable, meaning that their linear combinations are
+also valid solutions to Laplace's equations. We will exploit this fact to create flows which are relevant to
+the theory of aerodynamics, using three fundamental building blocks: 1) the **uniform flow**, 2) the
+**point vortex flow**, 3) and the **doublet flow**. A uniform flow is characterized by its freestream
+velocity, $U_{\infty}$, and its flow angle, $\alpha$. A point vortex flow is characterized by its
+circulation, $\Gamma$, and a doublet flow is characterized by its doublet strength, $\kappa$, and (for
+simplicity) the same flow angle, $\alpha$. The complex velocity induced by each of these flows are,
 
-Irrotational flow has a velocity potential, $\mathbf{u} = \nabla\phi$, and incompressibility turns that into
-$\nabla^2\phi = 0$. Because the operator is linear, the sum of two solutions is another solution. In two
-dimensions we can go further and pack the potential $\phi$ and the streamfunction $\psi$ into one analytic
-function of a complex variable, $F(z) = \phi + i\psi$. Any analytic $F$ is a legal flow, streamlines are the
-contours of $\psi$, and the velocity falls out of a single derivative, $u - iv = \mathrm{d}F/\mathrm{d}z$.
+$$
+\begin{equation}
+W_{U} = U_{\infty} e^{-i\alpha} \;\;\;\;\;\;\;\;
+W_{V} = \frac{i \Gamma}{2\pi \zeta} \;\;\;\;\;\;\;\;
+W_{D} = -\frac{\kappa}{\zeta^2}e^{i\alpha}
+\end{equation}
+$$
 
-The demo carries three terms:
+where $\zeta \in \mathbb{C}$ is the position in complex space. The interactive plot above plots the
+streamlines as well as the pressure field induced by each of the above flows. The **Components** checkboxes
+allow us to toggle each flow on and off, so any linear combination is available. For example, ticking
+**Uniform stream** and **Vortex** plots $W_{U} + W_{V}$. The coefficients $U_\infty,\alpha,\Gamma,\kappa$ can
+be adjusted using the sliders next to the plot. I encourage you to play around with the settings we
+discussed so far and see how they change the flow pattern.
 
-- **Uniform stream**, $F = U e^{-i\alpha} z$ — flow at speed $U$ and angle $\alpha$.
-- **Vortex**, $F = -\tfrac{i\Gamma}{2\pi}\ln(z - z_0)$ — circulation $\Gamma$ around the point $z_0$, yet
-  irrotational everywhere except at the singularity itself.
-- **Doublet**, $F = \tfrac{\kappa}{2\pi} e^{i\alpha}/(z - z_0)$ — the limit of a source and sink brought
-  together while their strength grows.
+## Flow Over a Cylinder
 
-## The body is a by-product, not an input
+An interesting flow arises when we add the **Uniform stream** and **Doublet**. You might have noticed that
+one of the streamlines for this flow forms a closed circle which varies in size as the freestream velocity
+and doublet strength change. By definition, the flow velocity is parallel to a streamline and never
+perpendicular to it. This implies that a closed streamline divides the flow into two regions that cannot
+communicate. That is, the fluid must flow around that circular streamline and not through it. This is the
+identical effect that a solid body would have if immersed in a potential flow. We can consider that
+streamline to be the boundary of a cylindrical solid body whose radius we can compute analytically as a
+function of the flow variables. The radius ends up being $a = \sqrt{\frac{\kappa}{U_\infty}}$, which is what
+the *radius a* readout tracks. We can then visualize the body by shading in the flow inside the streamline.
+Checking the option **Fill body** under the plot does just that. Remember, this does not change the flow at
+all. It just helps us see the boundary between the flow inside and outside the dividing streamline.
 
-Switch on the uniform stream and the doublet together. A circle appears, and the flow parts around it as
-though a solid cylinder were sitting there. Nothing imposed a boundary: the dividing streamline simply
-closes on itself, and it does so at radius
+An important characteristic of this flow is that we can add a vortex of any strength, $\Gamma$, at the
+center of the circle without violating this boundary condition. We can see this by ticking **Vortex** as
+well and moving the $\Gamma$ slider. While the streamlines change quite a bit, they never cross the boundary
+of the circle. Mathematically, this means that the solution to this problem is *non-unique*, or that there
+are several (in this case infinite) valid solutions.
 
-$$ a = \sqrt{\dfrac{\kappa}{2\pi U}} $$
+## Conformal Maps
 
-which is what the *radius a* readout tracks. Change the freestream and the body resizes, because the balance
-between the two flows is what sets its size. This inversion is the heart of the method — you do not mesh a
-shape and solve around it, you look for the superposition whose dividing streamline happens to be the shape
-you want.
+Perhaps the most powerful idea in the theory of potential flows is that of a conformal map. Conformal maps
+allow us to transform solutions of simple problems to solutions of difficult problems. For example, there
+exists conformal maps that can take the solution for the flow over the cylinder shown above, to the flow
+over a body of **any** shape. A conformal map of interest to the theory of aerodynamics is the *Joukowsky
+transform*. This transform takes the flow over a cylinder and maps it to the flow over some very reasonable
+looking airfoils! The transform is defined as,
 
-## Circulation is what makes lift, and nothing fixes it
+$$
+\begin{equation}
+  z = \zeta + \frac{1}{\zeta}
+\end{equation}
+$$
 
-Add the vortex. The circle survives, because a vortex centred inside it does not disturb the surface as a
-streamline, but the fore-and-aft symmetry breaks: the two stagnation points slide around the body. The
-Kutta–Joukowski theorem then gives the lift as $L' = -\rho U_\infty \Gamma$.
+The map takes every point in the complex $\zeta$-plane to a point in the a new complex z-plane. Checking the
+option **Joukowski transform** applies the transform to the visualization. While the transform does some
+interesting stuff to each of the flows, the body never quite looks like an airfoil. To get an airfoil shape
+we need to move the center of the circle away from the origin and apply the same transform. The sliders
+**Center $x_0$** and **Center $y_0$** do just that. You can play around with the settings until you have
+something that looks like an airfoil, or you can just press the **Cambered airfoil** button. I encourage you
+to fiddle around with how each of the parameters changes the shape of the airfoil or the characteristics of
+the flow around it. For example, changing **Center $y_0$** adjusts the camber distribution of the airfoil,
+while **Center $x_0$** adjusts the thickness distribution.
 
-Notice what is missing. Nothing in the inviscid problem tells you *which* $\Gamma$ nature picks. A cylinder
-in potential flow has no unique lift. That gap is the whole reason the Kutta condition has to be introduced
-by hand.
+*One implementation note:* the visualization uses the slightly more general form $z = \zeta + b^2/\zeta$ and
+picks $b$ so that the circle always passes exactly through it. That is why the trailing edge here is always
+sharp, and why the *TE point b* readout moves as you drag the centre around.
 
-## From a circle to an airfoil
+## The Kutta Condition
 
-The Joukowski map $\zeta = z + b^2/z$ is conformal, so it carries the flow across with it: $\psi$ is unchanged
-at corresponding points, and velocities simply scale by $|\mathrm{d}\zeta/\mathrm{d}z|$. Offsetting the
-circle's centre to the left produces thickness; lifting it produces camber.
+Conformal maps guarantee that the flow will not cross through the body's surface, so long as the flow does
+not cross the pre-transformed body's surface. Hence, the flow over the airfoil inherits the non-uniqueness
+of the flow over the circular cylinder. This means that we can set the circulation, $\Gamma$ to any value
+without affecting correctness of the solution. A natural question to ask is what is the "physical"
+circulation value, or the one that would occur in practice? One reason this is important is because the
+[Kutta-Joukowski theorem](https://en.wikipedia.org/wiki/Kutta%E2%80%93Joukowski_theorem) tells us that the
+lift produced by the airfoil is proportional to its circulation, $L = \rho U_\infty \Gamma$. How can we
+determine the physically occurring circulation? The answer is provided by the *Kutta condition*, which
+states the circulation must be such so that the flow leaves the trailing edge of the airfoil *smoothly*. The
+circulation necessitated by the Kutta condition is,
 
-The map has a catch. Its derivative vanishes at $z = \pm b$, which is exactly where the trailing edge lands.
-Unless the flow leaves that point smoothly, the mapped velocity there is infinite. Demanding that it stay
-finite — the **Kutta condition** — selects one and only one circulation,
+$$
+\begin{equation}
+  \Gamma = 4 \pi a U_\infty \mathrm{sin}(\alpha + \beta)
+\end{equation}
+$$
 
-$$ \Gamma = 4\pi U a \sin(\theta_{TE} - \alpha) $$
+We have previously defined all of these parameters except $\beta$, which is the angle of the line connecting
+the center of the circular cylinder with the cylinder's x-intercept, and is effectively a function of
+airfoil's camber. Pressing the **Apply Kutta condition** button sets the circulation to the correct value.
+We can visually confirm that flow indeed leaves the trailing edge smoothly. We can then change the flow
+parameters and reapply the Kutta condition. We have now covered each of the options/buttons of the
+calculator.
 
-and with it the entire lift curve of a thin airfoil. It is worth sitting with the strangeness of that:
-viscosity is what physically establishes the circulation, and viscosity appears nowhere in the formula.
+---
 
-## Things to try
-
-- Start with the doublet alone, then add the uniform stream and watch the closed body form. Change $U$ and
-  see the radius readout move as $\sqrt{\kappa/2\pi U}$.
-- On the cylinder, wind up the circulation. The two stagnation points slide down and towards each other,
-  merge at the bottom, then lift off the surface entirely. That departure happens at $\Gamma = 4\pi U a$.
-- Press **Cambered airfoil**, then set $\Gamma$ back to zero by hand. The flow whips around the sharp
-  trailing edge from below — the singularity the Kutta condition exists to remove. Press
-  **Apply Kutta condition** and watch the rear stagnation point snap onto the trailing edge.
-- With the airfoil at $\alpha = 8°$, compare the reported $C_L$ against the thin-airfoil estimate
-  $2\pi(\alpha + \beta)$. They agree to a few percent, and the gap is the thickness the thin-airfoil
-  approximation threw away.
+*An earlier version of this page built the visualization as an [ObservableHQ](https://observablehq.com/)
+notebook, following the approaches of
+[Ricky Reusser](https://observablehq.com/@rreusser/adaptive-domain-coloring) and
+[Graham Pullan](https://observablehq.com/@grahampullan/joukowski-airfoils). The visualization above is a
+standalone rewrite with no notebook runtime behind it, but the debt to both is unchanged.*

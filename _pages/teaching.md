@@ -6,12 +6,7 @@ author_profile: true
 ---
 
 <p class="teaching-lede">
-Material I have built and used to teach aerodynamics, and the mathematics underneath it. Each one runs in a
-browser with nothing to install, and each is a single self-contained HTML file &mdash; small enough to email
-to a student, drop into a lecture, or hand over for them to take apart. I write these when a concept is
-easier to manipulate than to describe: the Kutta condition is a sentence in a textbook and an afternoon of
-confusion at the blackboard, but it is obvious the moment you can watch the trailing-edge singularity
-disappear as you dial in the circulation.
+I have always enjoyed building intuition through visualization. This page collects material I have developed and used to teach aerodynamics and the mathematics underlying it. The material originally took the form of <a href="https://observablehq.com/">ObservableHQ</a> notebooks, but I have since converted it to HTML + WebGL using Claude Code.
 </p>
 
 <h2 class="sec">Incompressible aerodynamics</h2>
@@ -19,11 +14,11 @@ disappear as you dial in the circulation.
 <div class="demo-grid">
   <a class="demo-card" href="/teaching/potential-flow/">
     <span class="demo-card__topic">Potential flow &middot; conformal mapping</span>
-    <h3>Building a wing out of nothing</h3>
+    <h3>Potential flows and conformal maps</h3>
     <p>
       Add a uniform stream, a vortex and a doublet and a cylinder appears on its own &mdash; no boundary was
-      ever imposed. Map the circle to an airfoil, then apply the Kutta condition and watch it pick the one
-      circulation nature allows.
+      ever imposed. Map the circle to an airfoil with the Joukowsky transform, then apply the Kutta condition
+      and watch it pick the one circulation nature allows.
     </p>
   </a>
 
@@ -37,14 +32,16 @@ disappear as you dial in the circulation.
     </p>
   </a>
 
-  <a class="demo-card" href="/posts/2023/11/blog-post-1/">
-    <span class="demo-card__topic">Complex analysis &middot; WebGL</span>
-    <h3>Potential flows and conformal maps</h3>
+
+   <a class="demo-card" href="/teaching/falkner-skan/">
+    <span class="demo-card__topic">Boundary layers &middot; separation</span>
+    <h3>Pressure gradient and the shape of a boundary layer</h3>
     <p>
-      A longer written walkthrough of the same territory, building the visualisation from scratch: uniform
-      flow, vortices, doublets, flow over a cylinder, the Joukowski transform and the Kutta condition.
+      One parameter carries you from stagnation-point flow to the exact point of separation. The profile is
+      solved live by shooting, so you can watch the inflection point emerge and the wall shear fall to zero.
     </p>
   </a>
+
 </div>
 
 <h2 class="sec">Compressible flow</h2>
@@ -60,14 +57,7 @@ disappear as you dial in the circulation.
     </p>
   </a>
 
-  <a class="demo-card" href="/teaching/falkner-skan/">
-    <span class="demo-card__topic">Boundary layers &middot; separation</span>
-    <h3>Pressure gradient and the shape of a boundary layer</h3>
-    <p>
-      One parameter carries you from stagnation-point flow to the exact point of separation. The profile is
-      solved live by shooting, so you can watch the inflection point emerge and the wall shear fall to zero.
-    </p>
-  </a>
+ 
 </div>
 
 <h2 class="sec">Waves and measurement</h2>

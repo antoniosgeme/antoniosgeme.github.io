@@ -335,7 +335,7 @@
 
         <div class="param">
           <div class="prow"><span class="pname">Doublet <em>&#954;</em></span><span class="pval" id="vK">6.28</span></div>
-          <input type="range" id="sK" min="0" max="40" step="0.05" value="6.283">
+          <input type="range" id="sK" min="0" max="6" step="0.01" value="1">
         </div>
 
         <div class="param">
@@ -384,13 +384,13 @@
   <div class="eq">
     <div class="eqline">
       <span class="term" id="tU"><i>F</i>(<i>z</i>) = <i>U</i>e<sup>&#8722;<i>i&#945;</i></sup>(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
-      <span class="term" id="tV"> &#8722; <i>i</i><i>&#915;</i>/2<i>&#960;</i> &#183; ln(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
-      <span class="term" id="tD"> + <i>&#954;</i>e<sup><i>i&#945;</i></sup>/2<i>&#960;</i>(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
+      <span class="term" id="tV"> + <i>i</i><i>&#915;</i>/2<i>&#960;</i> &#183; ln(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
+      <span class="term" id="tD"> + <i>&#954;</i>e<sup><i>i&#945;</i></sup>/(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
     </div>
     <p class="eqnote">
       The streamfunction <code>&#968; = Im F</code> is plotted directly as contours, and the pressure follows from
       <code>C_p = 1 &#8722; |dF/d&#950;|&#178;/U&#178;</code>. A closed body appears only when the doublet balances the stream:
-      at <code>&#954; = 2&#960;Ua&#178;</code> the circle of radius <code>a</code> becomes a streamline. Turn on the Joukowski
+      at <code>&#954; = Ua&#178;</code> the circle of radius <code>a</code> becomes a streamline. Turn on the Joukowski
       transform to map that circle to an airfoil, then apply the Kutta condition to fix the circulation that
       makes the flow leave the trailing edge smoothly.
     </p>
@@ -462,12 +462,12 @@
     "    vel += u_U * vec2(ca, -sa);",
     "  }",
     "  if (u_hasV) {",
-    "    psi += -u_Gamma/TAUF * 0.5*log(r2);",
-    "    vel += (u_Gamma/TAUF) * cdiv(vec2(0.0,-1.0), d);",
+    "    psi += u_Gamma/TAUF * 0.5*log(r2);",
+    "    vel += (u_Gamma/TAUF) * cdiv(vec2(0.0,1.0), d);",
     "  }",
     "  if (u_hasD) {",
-    "    psi += (u_kappa/TAUF) * (sa*d.x - ca*d.y) / r2;",
-    "    vel += -(u_kappa/TAUF) * cdiv(vec2(ca, sa), cmul(d, d));",
+    "    psi += u_kappa * (sa*d.x - ca*d.y) / r2;",
+    "    vel += -u_kappa * cdiv(vec2(ca, sa), cmul(d, d));",
     "  }",
 
     "  if (u_jouk) {",
@@ -583,7 +583,7 @@
     var k = parseFloat(el.k.value);
     var x0 = parseFloat(el.x.value);
     var y0 = parseFloat(el.y.value);
-    var a = (el.dou.checked && U0 > 0 && k > 0) ? Math.sqrt(k / (TAU * U0)) : 0;
+    var a = (el.dou.checked && U0 > 0 && k > 0) ? Math.sqrt(k / U0) : 0;
     var inner = a * a - y0 * y0;
     var b = inner > 0 ? x0 + Math.sqrt(inner) : 0;
     return { U: U0, k: k, x0: x0, y0: y0, a: a, b: b, ok: inner > 1e-6 && a > 0 };
@@ -642,7 +642,7 @@
     document.getElementById("rB").textContent = g.ok ? g.b.toFixed(3) : "\u2014";
 
     var chord = jouk ? 4 * g.b : 0;
-    var cl = (chord > 0 && g.U > 0) ? (-2 * Gam) / (g.U * chord) : NaN;
+    var cl = (chord > 0 && g.U > 0) ? (2 * Gam) / (g.U * chord) : NaN;
     document.getElementById("rCL").textContent = isFinite(cl) ? fmt(cl, 3) : "\u2014";
 
     document.getElementById("tU").classList.toggle("off", !el.uni.checked);
@@ -668,8 +668,8 @@
     var g = geometry();
     if (!g.ok) return;
     var alpha = parseFloat(el.alpha.value) * Math.PI / 180;
-    var thetaTE = Math.atan2(-g.y0, g.b - g.x0);
-    var Gam = 4 * Math.PI * g.U * g.a * Math.sin(thetaTE - alpha);
+    var beta = Math.asin(Math.max(-1, Math.min(1, g.y0 / g.a)));
+    var Gam = 4 * Math.PI * g.U * g.a * Math.sin(alpha + beta);
     el.g.value = Math.max(-25, Math.min(25, Gam));
     el.vor.checked = true;
     draw();
@@ -687,18 +687,18 @@
 
   document.getElementById("bAirfoil").addEventListener("click", function () {
     preset({ uni: true, vor: true, dou: true, body: true, stream: true, jouk: true,
-             alpha: 8, u: 1, k: 8.6, x: -0.09, y: 0.09, g: 0 });
+             alpha: 8, u: 1, k: 1.37, x: -0.09, y: 0.09, g: 0 });
     kutta();
   });
 
   document.getElementById("bCyl").addEventListener("click", function () {
     preset({ uni: true, vor: false, dou: true, body: true, stream: true, jouk: false,
-             alpha: 0, u: 1, k: 6.283, x: 0, y: 0, g: 0 });
+             alpha: 0, u: 1, k: 1, x: 0, y: 0, g: 0 });
   });
 
   document.getElementById("bReset").addEventListener("click", function () {
     preset({ uni: true, vor: true, dou: true, body: true, stream: true, jouk: false,
-             alpha: 0, u: 1, k: 6.283, x: 0, y: 0, g: 0 });
+             alpha: 0, u: 1, k: 1, x: 0, y: 0, g: 0 });
   });
 
   Object.keys(el).forEach(function (k) {

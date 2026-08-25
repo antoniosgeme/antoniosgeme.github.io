@@ -3,6 +3,7 @@ permalink: /markdown/
 title: "Markdown"
 author_profile: true
 sitemap: false
+published: false
 redirect_from: 
   - /md/
   - /markdown.html

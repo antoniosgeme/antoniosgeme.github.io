@@ -1,0 +1,17 @@
+- title: "AeroInviscid.jl"
+  repo_url: "https://github.com/antoniosgeme/AeroInviscid.jl"
+  topics:
+    - Julia
+    - Aerodynamics
+
+- title: "AeroGeometry.jl"
+  repo_url: "https://github.com/antoniosgeme/AeroGeometry.jl"
+  topics:
+    - Julia
+    - Geometry
+
+- title: "UniformStreamlines.jl"
+  repo_url: "https://github.com/antoniosgeme/UniformStreamlines.jl"
+  topics:
+    - Julia
+    - Flow Visualization

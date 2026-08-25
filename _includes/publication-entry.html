@@ -1,0 +1,46 @@
+{%- comment -%}
+  Renders one publication entry. Caller passes:
+    include.publication  — the publication hash from _data/publications.yml
+    include.kind         — "journal" | "conference" | "abstract" (controls which
+                            secondary fields to show; e.g. journal vs booktitle).
+{%- endcomment -%}
+
+{%- assign publication = include.publication -%}
+{%- assign kind = include.kind -%}
+
+<li class="pub-entry">
+  <div class="pub-cite">
+    {%- assign authors = publication.author | split: ' and ' -%}
+    {%- for author in authors -%}
+      {%- assign authorNames = author | split: ', ' -%}
+      {%- if authorNames.size > 1 -%}
+        {%- assign lastName = authorNames[0] -%}
+        {%- assign firstInitial = authorNames[1] | slice: 0 -%}
+        {%- if lastName == "Gementzopoulos" -%}
+          <strong>{{ lastName }} {{ firstInitial }}.</strong>{% unless forloop.last %}, {% endunless %}
+        {%- else -%}
+          {{ lastName }} {{ firstInitial }}.{% unless forloop.last %}, {% endunless %}
+        {%- endif -%}
+      {%- else -%}
+        {%- if author == "Gementzopoulos" -%}
+          <strong>{{ author }}.</strong>{% unless forloop.last %}, {% endunless %}
+        {%- else -%}
+          {{ author }}{% unless forloop.last %}, {% endunless %}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    ({{ publication.year }}).
+    <strong>{{ publication.title }}</strong>.
+    {%- if kind == "journal" and publication.journal %} <em>{{ publication.journal }}</em>{% if publication.volume %}, {{ publication.volume }}{% endif %}{% if publication.pages %}, {{ publication.pages }}{% endif %}.{%- endif -%}
+    {%- if kind == "conference" %}{% if publication.booktitle %} <em>{{ publication.booktitle }}</em>{% endif %}{% if publication.pages %}, {{ publication.pages }}{% endif %}.{%- endif -%}
+    {%- if kind == "abstract" and publication.journal %} <em>{{ publication.journal }}</em>.{%- endif -%}
+  </div>
+  <div class="pub-links">
+    {%- if publication.doi -%}
+      <a class="paper-link" href="https://doi.org/{{ publication.doi | remove: ' ' }}" target="_blank" rel="noopener">Read paper →</a>
+    {%- endif -%}
+    {%- if publication.preprint -%}
+      <a class="paper-link paper-link--preprint" href="{{ publication.preprint }}" target="_blank" rel="noopener">Preprint</a>
+    {%- endif -%}
+  </div>
+</li>

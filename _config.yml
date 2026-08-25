@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "Antonios Gementzopoulos"
 title_separator          : "-"
 name                     : &name "Antonios Gementzopoulos"
-description              : &description "Aerodynamics Reseacher"
+description              : &description "Aerodynamics Researcher"
 url                      : https://antoniosgeme.com # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "antoniosgeme/antoniosgeme.github.io"
@@ -62,7 +62,7 @@ facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 :  # Open Graph/Twitter default site image
+og_image                 : "/images/gallery/dark_wing_high_res.jpg"  # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
@@ -81,12 +81,12 @@ analytics:
 # Site Author
 author:
   name             : "Antonios Gementzopoulos"
-  avatar           : "FaceShot_small.jpg"
-  bio              : Postdoctoral Associate <br> Aerodynamics Researcher
+  avatar           : "Headshot.png"
+  bio              : Postdoctoral Associate <br> University of Maryland
   location         : "Washington, DC"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "https://scholar.google.com/citations?user=tQpJjzwAAAAJ&hl=en&authuser=1"
+  googlescholar    : "https://scholar.google.com/citations?user=tQpJjzwAAAAJ&hl=en"
   email            : ageme&#64;umd&#46;edu
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
@@ -103,7 +103,7 @@ author:
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
   linkedin         : antonios-gementzopoulos-8a2704158/
-  orcid            : #"http://orcid.org/yourorcidurl"
+  orcid            : # TODO: add ORCID, e.g. "https://orcid.org/0000-0000-0000-0000"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username
@@ -176,22 +176,6 @@ kramdown:
   enable_coderay: false
 
 
-# Collections
-collections:
-  teaching:
-    output: true
-    permalink: /:collection/:path/
-  publications:
-    output: true
-    permalink: /:collection/:path/
-  portfolio:
-    output: true
-    permalink: /:collection/:path/
-  talks:
-    output: true
-    permalink: /:collection/:path/
-
-
 # Defaults
 defaults:
   # _posts
@@ -212,46 +196,14 @@ defaults:
     values:
       layout: single
       author_profile: true
-  # _teaching
-  - scope:
-      path: ""
-      type: teaching
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
-  # _publications
-  - scope:
-      path: ""
-      type: publications
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
-  # _portfolio
-  - scope:
-      path: ""
-      type: portfolio
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comment: true
-  # _talks
-  - scope:
-      path: ""
-      type: talks
-    values:
-      layout: talk
-      author_profile: true
-      share: true
 
 # Sass/SCSS
 sass:
   sass_dir: _sass
   style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+  quiet_deps: true
+  silence_deprecations:
+    - import
 
 
 # Outputting
@@ -274,7 +226,7 @@ whitelist:
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
-  - jemoji
+  - jekyll-redirect-from
 
 
 # Archives

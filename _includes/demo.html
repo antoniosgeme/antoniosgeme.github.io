@@ -1,0 +1,45 @@
+<div class="demo">
+  <iframe class="demo__frame" src="{{ include.src }}" title="{{ include.title }}" loading="lazy" scrolling="no"></iframe>
+  <p class="demo__note">
+    Runs entirely in this page.
+    <a href="{{ include.src }}" target="_blank" rel="noopener">Open it full width</a>
+    or <a href="https://github.com/antoniosgeme/antoniosgeme.github.io/blob/master{{ include.src }}" target="_blank" rel="noopener">read the source</a>
+    &mdash; one self-contained HTML file, no plugins and no external data.
+  </p>
+</div>
+
+<style>
+  .demo { margin: 1.8em 0; }
+  .demo__frame {
+    display: block; width: 100%; min-height: 620px;
+    border: 1px solid #dfe3e8; border-radius: 4px; background: #f2f4f7;
+  }
+  .demo__note { font-size: 0.82em; color: #6b7783; margin: 10px 0 0; line-height: 1.5; }
+</style>
+
+<script>
+(function () {
+  // Same-origin, so the frame can be measured directly and sized to its content.
+  function fit(fr) {
+    try {
+      var d = fr.contentDocument;
+      if (d && d.documentElement) fr.style.height = Math.ceil(d.documentElement.scrollHeight) + "px";
+    } catch (e) { /* leave the CSS min-height in place */ }
+  }
+  function watch(fr) {
+    fit(fr);
+    setTimeout(function () { fit(fr); }, 250);   // after webfonts settle
+    if (window.ResizeObserver) new ResizeObserver(function () { fit(fr); }).observe(fr.parentElement);
+  }
+  function init() {
+    Array.prototype.forEach.call(document.querySelectorAll(".demo__frame"), function (fr) {
+      fr.addEventListener("load", function () { watch(fr); });
+      try {
+        if (fr.contentDocument && fr.contentDocument.readyState === "complete") watch(fr);
+      } catch (e) {}
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>

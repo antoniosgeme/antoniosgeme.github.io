@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Falkner-Skan Profiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:#f2f4f7; --panel:#ffffff; --panel-sunk:#eef1f5;
+    --ink:#0e1319; --ink-soft:#4a5763; --ink-faint:#8794a1;
+    --rule:#d7dee6; --rule-soft:#e6ebf0;
+    --accent:#1f7a8c; --accent-soft:#e2eff2; --track:#d2dae2;
+    --grid:#e6ebf0; --ref:#a9b6c2; --fill:#e2eff2; --wall:#2b3742;
+    --warm:#c8622f; --cool:#2f6fa8; --danger:#b5384a;
+    --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0b1016; --panel:#141b23; --panel-sunk:#101820;
+      --ink:#e8eef4; --ink-soft:#9dabb8; --ink-faint:#64727f;
+      --rule:#26313b; --rule-soft:#1c252e;
+      --accent:#4bb3c7; --accent-soft:#14313a; --track:#2a3540;
+      --grid:#1e2831; --ref:#4a5a67; --fill:#15303a; --wall:#8fa1af;
+      --warm:#e08a52; --cool:#6ba8d8; --danger:#e0687b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0b1016; --panel:#141b23; --panel-sunk:#101820;
+    --ink:#e8eef4; --ink-soft:#9dabb8; --ink-faint:#64727f;
+    --rule:#26313b; --rule-soft:#1c252e;
+    --accent:#4bb3c7; --accent-soft:#14313a; --track:#2a3540;
+    --grid:#1e2831; --ref:#4a5a67; --fill:#15303a; --wall:#8fa1af;
+    --warm:#e08a52; --cool:#6ba8d8; --danger:#e0687b;
+  }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:14px 14px 20px; display:flex; flex-direction:column; gap:24px; }
+  header { display:flex; flex-direction:column; gap:6px; }
+  h1 { margin:0; font-size:25px; font-weight:600; letter-spacing:-0.015em; text-wrap:balance; }
+  .sub { margin:0; color:var(--ink-soft); max-width:68ch; }
+
+  .stage { display:grid; grid-template-columns:minmax(0,1fr) 268px; gap:20px; align-items:start; }
+  @media (max-width:820px) { .stage { grid-template-columns:minmax(0,1fr); } }
+  .left { display:flex; flex-direction:column; gap:20px; min-width:0; }
+
+  .field { background:var(--panel); border:1px solid var(--rule); overflow:hidden; }
+  .field canvas { display:block; width:100%; }
+  .cap { padding:9px 12px; border-top:1px solid var(--rule-soft); font-family:var(--mono); font-size:11px; color:var(--ink-soft); }
+
+  .rail { display:flex; flex-direction:column; background:var(--panel); border:1px solid var(--rule); }
+  .group { padding:14px 14px 16px; border-bottom:1px solid var(--rule-soft); }
+  .group:last-child { border-bottom:0; }
+  .glabel { font-size:10px; font-weight:600; letter-spacing:0.11em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:11px; }
+
+  .param { display:flex; flex-direction:column; gap:5px; }
+  .prow { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .pname { font-size:13px; color:var(--ink-soft); }
+  .pname em { font-family:var(--serif); font-style:italic; color:var(--ink); }
+  .pval { font-family:var(--mono); font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--ink); }
+
+  input[type="range"] { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:var(--track); outline:none; margin:6px 0 0; cursor:pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--accent); cursor:pointer; }
+  input[type="range"]::-moz-range-thumb { width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--accent); cursor:pointer; }
+  input[type="range"]:focus-visible, button:focus-visible, input[type="checkbox"]:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  .btns { display:flex; flex-direction:column; gap:7px; }
+  button { font-family:var(--sans); font-size:13px; padding:8px 11px; background:var(--panel-sunk); color:var(--ink); border:1px solid var(--rule); cursor:pointer; text-align:left; transition:background 120ms ease, border-color 120ms ease; }
+  button:hover { background:var(--accent-soft); border-color:var(--accent); }
+
+  .checks { display:flex; flex-direction:column; gap:9px; }
+  label.check { display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; }
+  label.check input { accent-color:var(--accent); width:15px; height:15px; margin:0; cursor:pointer; }
+
+  .readout { display:grid; grid-template-columns:auto 1fr; gap:5px 12px; font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums; }
+  .readout dt { color:var(--ink-faint); }
+  .readout dd { margin:0; text-align:right; }
+
+  .eq { background:var(--panel); border:1px solid var(--rule); padding:16px 18px; display:flex; flex-direction:column; gap:9px; }
+  .eqline { font-family:var(--serif); font-size:18px; overflow-x:auto; white-space:nowrap; padding-bottom:2px; }
+  .eqline i { font-style:italic; }
+  sub, sup { font-size:0.68em; }
+  .eqnote { font-size:13px; color:var(--ink-soft); max-width:78ch; }
+  .eqnote code { font-family:var(--mono); font-size:0.9em; color:var(--ink); }
+  .eqnote strong { font-weight:600; color:var(--ink); }
+
+  .warn { margin:0; padding:9px 12px; background:var(--accent-soft); border:1px solid var(--accent); font-size:12.5px; }
+  .warn[hidden] { display:none; }
+  footer { font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule-soft); padding-top:14px; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stage">
+    <div class="left">
+      <div class="field">
+        <canvas id="plot" width="900" height="620"></canvas>
+        <div class="cap" id="cap">&nbsp;</div>
+      </div>
+      <div class="field">
+        <canvas id="geo" width="900" height="220"></canvas>
+        <div class="cap">Wedge flow that produces this gradient &mdash; surface angle <i>&#946;</i>&#960;/2 from the oncoming flow, external velocity <i>U<sub>e</sub></i> &#8733; <i>x<sup>m</sup></i></div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="group">
+        <div class="glabel">Pressure gradient</div>
+        <div class="param">
+          <div class="prow"><span class="pname">Hartree <em>&#946;</em></span><span class="pval" id="vB">0.000</span></div>
+          <input type="range" id="sB" min="-0.2" max="2" step="0.0001" value="0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Presets</div>
+        <div class="btns">
+          <button data-b="1">Stagnation point &#946; = 1</button>
+          <button data-b="0.5">Favorable &#946; = 0.5</button>
+          <button data-b="0">Flat plate &#946; = 0</button>
+          <button data-b="-0.14">Adverse &#946; = &#8722;0.14</button>
+          <button data-b="-0.198838">Separation &#946; = &#8722;0.1988</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Display</div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="cRef" checked> Blasius reference</label>
+          <label class="check"><input type="checkbox" id="cShear"> Shear <i>f</i>&#8243;(&#951;)</label>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Derived</div>
+        <dl class="readout" id="ro"></dl>
+      </div>
+    </div>
+  </div>
+
+  <p class="warn" id="warn" hidden></p>
+
+  <div class="eq">
+    <div class="eqline">
+      <i>f</i>&#8244; + <i>f f</i>&#8243; + <i>&#946;</i>(1 &#8722; <i>f</i>&#8242;<sup>2</sup>) = 0 &nbsp;&nbsp;
+      <span style="color:var(--ink-faint)">
+        <i>f</i>(0) = <i>f</i>&#8242;(0) = 0, &nbsp; <i>f</i>&#8242;(&#8734;) = 1
+      </span>
+    </div>
+    <p class="eqnote" id="note"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var ETA = 14, DE = 0.01, N = Math.round(ETA / DE);
+  var BSEP = -0.198838;
+
+  var betaVal = 0;
+  var plot = document.getElementById("plot"), pctx = plot.getContext("2d");
+  var geo = document.getElementById("geo"), gctx = geo.getContext("2d");
+  var el = {
+    B: document.getElementById("sB"),
+    ref: document.getElementById("cRef"),
+    shear: document.getElementById("cShear")
+  };
+  function cv(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  // y = [f, f', f'']
+  function deriv(y, beta) {
+    return [y[1], y[2], -y[0] * y[2] - beta * (1 - y[1] * y[1])];
+  }
+
+  // Matching f' = 1 far downstream amplifies shooting error exponentially, so match at the
+  // shortest eta where the profile has genuinely levelled off. Thin layers (large beta)
+  // settle early; near separation the approach is slow and needs more room.
+  function etaMatch(beta) { return beta >= 0.5 ? 6.5 : (beta >= 0 ? 9 : 12); }
+
+  function march(s, beta, keep, stop) {
+    var nStop = Math.round((stop || ETA) / DE);
+    var y = [0, 0, s], h = DE;
+    var fp = keep ? new Float64Array(N + 1) : null;
+    var fpp = keep ? new Float64Array(N + 1) : null;
+    var ds = 0, th = 0;
+    if (keep) { fp[0] = 0; fpp[0] = s; }
+    for (var i = 1; i <= nStop; i++) {
+      var k1 = deriv(y, beta);
+      var y2 = [y[0] + h / 2 * k1[0], y[1] + h / 2 * k1[1], y[2] + h / 2 * k1[2]];
+      var k2 = deriv(y2, beta);
+      var y3 = [y[0] + h / 2 * k2[0], y[1] + h / 2 * k2[1], y[2] + h / 2 * k2[2]];
+      var k3 = deriv(y3, beta);
+      var y4 = [y[0] + h * k3[0], y[1] + h * k3[1], y[2] + h * k3[2]];
+      var k4 = deriv(y4, beta);
+      var prev = y[1];
+      y = [
+        y[0] + h / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]),
+        y[1] + h / 6 * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]),
+        y[2] + h / 6 * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2])
+      ];
+      if (!isFinite(y[1]) || Math.abs(y[1]) > 8) {
+        var up = !isFinite(y[1]) || y[1] > 0;
+        return { end: up ? 1e6 : -1e6, bad: true, fp: fp, fpp: fpp, ds: 0, th: 0 };
+      }
+      ds += h * (1 - 0.5 * (prev + y[1]));
+      th += h * 0.5 * (prev * (1 - prev) + y[1] * (1 - y[1]));
+      if (keep && i <= N) { fp[i] = y[1]; fpp[i] = y[2]; }
+    }
+    return { end: y[1], bad: false, fp: fp, fpp: fpp, ds: ds, th: th };
+  }
+
+  // f'(eta_match) is not monotonic in f''(0): both too-small and too-large shots diverge,
+  // leaving a well-behaved window. Scan for a sign change inside it, then bisect.
+  function shoot(beta) {
+    var em = etaMatch(beta);
+    var SMAX = 3, n = 900, lo = null, hi = null, pS = null, pF = null;
+    for (var i = 0; i <= n; i++) {
+      var s = SMAX * i / n;
+      var r = march(s, beta, false, em);
+      if (r.bad) { pS = null; continue; }
+      var f = r.end - 1;
+      if (pS !== null && pF < 0 && f >= 0) { lo = pS; hi = s; break; }
+      pS = s; pF = f;
+    }
+    if (lo === null) return 0;
+    for (var k = 0; k < 60; k++) {
+      var m = 0.5 * (lo + hi);
+      var rm = march(m, beta, false, em);
+      if (rm.bad || rm.end >= 1) hi = m; else lo = m;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  function solve(beta) {
+    var s = shoot(beta);
+    var r = march(s, beta, true, ETA);
+    if (r.bad) r = march(s * 0.9999, beta, true, ETA);
+    return { s: s, fp: r.fp, fpp: r.fpp, ds: r.ds, th: r.th, H: r.ds / Math.max(r.th, 1e-9) };
+  }
+
+  var blasius = solve(0);
+  var cache = {};
+  function get(beta) {
+    var k = beta.toFixed(6);
+    if (!cache[k]) cache[k] = solve(beta);
+    return cache[k];
+  }
+
+  function drawPlot(beta, sol) {
+    var W = plot.width, H = plot.height, dpr = W / plot.clientWidth;
+    pctx.clearRect(0, 0, W, H);
+    pctx.fillStyle = cv("--panel"); pctx.fillRect(0, 0, W, H);
+
+    var m = { l: 60 * dpr, r: 22 * dpr, t: 20 * dpr, b: 42 * dpr };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b;
+    var ETAV = 8, XMIN = el.shear.checked ? -0.2 : 0, XMAX = 1.35;
+    var X = function (u) { return m.l + (u - XMIN) / (XMAX - XMIN) * pw; };
+    var Y = function (e) { return m.t + ph - e / ETAV * ph; };
+
+    pctx.strokeStyle = cv("--grid"); pctx.lineWidth = Math.max(1, dpr * 0.8);
+    for (var u = 0; u <= 1.2; u += 0.2) { pctx.beginPath(); pctx.moveTo(X(u), m.t); pctx.lineTo(X(u), m.t + ph); pctx.stroke(); }
+    for (var e = 0; e <= ETAV; e += 1) { pctx.beginPath(); pctx.moveTo(m.l, Y(e)); pctx.lineTo(m.l + pw, Y(e)); pctx.stroke(); }
+
+    pctx.fillStyle = cv("--ink-faint");
+    pctx.font = "500 " + 11 * dpr + "px IBM Plex Mono, monospace";
+    pctx.textAlign = "center"; pctx.textBaseline = "top";
+    for (var u2 = 0; u2 <= 1.2; u2 += 0.2) pctx.fillText(u2.toFixed(1), X(u2), m.t + ph + 8 * dpr);
+    pctx.textAlign = "right"; pctx.textBaseline = "middle";
+    for (var e2 = 0; e2 <= ETAV; e2 += 1) pctx.fillText(String(e2), m.l - 8 * dpr, Y(e2));
+    pctx.textAlign = "center";
+    pctx.fillText("u / U\u2091", m.l + pw / 2, m.t + ph + 24 * dpr);
+    pctx.save();
+    pctx.translate(16 * dpr, m.t + ph / 2); pctx.rotate(-Math.PI / 2);
+    pctx.fillText("\u03b7", 0, 0); pctx.restore();
+
+    var iMax = Math.round(ETAV / DE);
+
+    // wall
+    pctx.strokeStyle = cv("--wall"); pctx.lineWidth = Math.max(2.5, dpr * 2);
+    pctx.beginPath(); pctx.moveTo(m.l, Y(0)); pctx.lineTo(m.l + pw, Y(0)); pctx.stroke();
+
+    // free-stream marker
+    pctx.strokeStyle = cv("--ref"); pctx.lineWidth = Math.max(1, dpr);
+    pctx.setLineDash([5 * dpr, 4 * dpr]);
+    pctx.beginPath(); pctx.moveTo(X(1), m.t); pctx.lineTo(X(1), Y(0)); pctx.stroke();
+    pctx.setLineDash([]);
+
+    function trace(arr, col, w, dash, fill) {
+      pctx.beginPath();
+      for (var i = 0; i <= iMax; i++) {
+        var px = X(arr[i]), py = Y(i * DE);
+        if (i === 0) pctx.moveTo(px, py); else pctx.lineTo(px, py);
+      }
+      if (fill) {
+        pctx.lineTo(X(0), Y(ETAV)); pctx.lineTo(X(0), Y(0)); pctx.closePath();
+        pctx.fillStyle = cv("--fill"); pctx.fill();
+        pctx.beginPath();
+        for (var j = 0; j <= iMax; j++) {
+          var qx = X(arr[j]), qy = Y(j * DE);
+          if (j === 0) pctx.moveTo(qx, qy); else pctx.lineTo(qx, qy);
+        }
+      }
+      pctx.strokeStyle = col; pctx.lineWidth = w; pctx.setLineDash(dash || []);
+      pctx.stroke(); pctx.setLineDash([]);
+    }
+
+    if (el.ref.checked && Math.abs(beta) > 1e-6)
+      trace(blasius.fp, cv("--ref"), Math.max(1.6, dpr * 1.2), [6 * dpr, 5 * dpr], false);
+
+    trace(sol.fp, cv("--accent"), Math.max(2.8, dpr * 2.1), null, true);
+
+    if (el.shear.checked) {
+      pctx.beginPath();
+      for (var q = 0; q <= iMax; q++) {
+        var sx = X(sol.fpp[q]), sy = Y(q * DE);
+        if (q === 0) pctx.moveTo(sx, sy); else pctx.lineTo(sx, sy);
+      }
+      pctx.strokeStyle = cv("--warm"); pctx.lineWidth = Math.max(1.8, dpr * 1.4);
+      pctx.stroke();
+      pctx.fillStyle = cv("--warm"); pctx.textAlign = "left";
+      pctx.fillText("f\u2033", X(sol.fpp[0]) + 8 * dpr, Y(0.35));
+    }
+
+    // wall-slope tangent
+    var slope = sol.s;
+    if (slope > 1e-4) {
+      var de = 1.4, du = slope * de;
+      pctx.strokeStyle = cv("--danger"); pctx.lineWidth = Math.max(1.6, dpr * 1.2);
+      pctx.setLineDash([4 * dpr, 3 * dpr]);
+      pctx.beginPath(); pctx.moveTo(X(0), Y(0)); pctx.lineTo(X(du), Y(de)); pctx.stroke();
+      pctx.setLineDash([]);
+    }
+    pctx.fillStyle = cv("--danger"); pctx.textAlign = "left"; pctx.textBaseline = "middle";
+    pctx.font = "500 " + 12.5 * dpr + "px IBM Plex Mono, monospace";
+    pctx.fillText("f\u2033(0) = " + slope.toFixed(4), X(0) + 16 * dpr, Y(0.62));
+  }
+
+  function drawGeo(beta) {
+    var W = geo.width, H = geo.height, dpr = W / geo.clientWidth;
+    gctx.clearRect(0, 0, W, H);
+    gctx.fillStyle = cv("--panel"); gctx.fillRect(0, 0, W, H);
+
+    var trueAng = beta * Math.PI / 2;                                  // actual wedge surface angle
+    var inc = Math.max(-25 * Math.PI / 180, Math.min(55 * Math.PI / 180, trueAng));  // clamped for drawing
+    var ax = W * 0.26, ay = H * 0.74, L = W * 0.62;
+    var tx = Math.cos(inc), ty = -Math.sin(inc);                       // surface tangent
+    var nx = -Math.sin(inc), ny = -Math.cos(inc);                      // outward normal
+    var ex = ax + L * tx, ey = ay + L * ty;
+
+    var sol = get(beta), dScale = H * 0.42, uScale = H * 0.15;
+
+    // boundary layer, thickening as sqrt of distance
+    gctx.fillStyle = cv("--fill");
+    gctx.beginPath();
+    gctx.moveTo(ax, ay);
+    for (var i = 0; i <= 40; i++) {
+      var t = i / 40, d = dScale * Math.sqrt(t);
+      gctx.lineTo(ax + L * t * tx + nx * d, ay + L * t * ty + ny * d);
+    }
+    gctx.lineTo(ex, ey);
+    gctx.closePath(); gctx.fill();
+
+    // wedge body
+    gctx.fillStyle = cv("--wall");
+    gctx.beginPath();
+    gctx.moveTo(ax, ay); gctx.lineTo(ex, ey); gctx.lineTo(ex, H); gctx.lineTo(ax, H);
+    gctx.closePath(); gctx.fill();
+
+    // velocity profiles at four stations
+    for (var r = 1; r <= 4; r++) {
+      var t2 = 0.16 + r * 0.20;
+      var bx = ax + L * t2 * tx, by = ay + L * t2 * ty;
+      var d2 = dScale * Math.sqrt(t2);
+      gctx.strokeStyle = cv("--ref"); gctx.lineWidth = Math.max(1, dpr * 0.9);
+      gctx.beginPath();
+      gctx.moveTo(bx, by); gctx.lineTo(bx + nx * d2, by + ny * d2); gctx.stroke();
+      gctx.strokeStyle = cv("--accent"); gctx.lineWidth = Math.max(1.8, dpr * 1.5);
+      gctx.beginPath();
+      for (var j = 0; j <= 40; j++) {
+        var frac = j / 40, u = sol.fp[Math.round(frac * 6 / DE)];
+        var px = bx + nx * d2 * frac + tx * u * uScale;
+        var py = by + ny * d2 * frac + ty * u * uScale;
+        if (j === 0) gctx.moveTo(px, py); else gctx.lineTo(px, py);
+      }
+      gctx.stroke();
+    }
+
+    // oncoming flow
+    gctx.strokeStyle = cv("--ink-faint"); gctx.lineWidth = Math.max(1, dpr);
+    for (var k = 1; k <= 3; k++) {
+      var y0 = ay - H * 0.20 * k;
+      if (y0 < H * 0.05) break;
+      gctx.beginPath(); gctx.moveTo(0, y0); gctx.lineTo(ax * 0.78, y0); gctx.stroke();
+    }
+
+    gctx.fillStyle = cv("--ink-soft"); gctx.textAlign = "left"; gctx.textBaseline = "middle";
+    gctx.font = "500 " + 12 * dpr + "px IBM Plex Mono, monospace";
+    gctx.fillText("U\u2091", W * 0.02, ay - H * 0.42);
+    gctx.fillText("\u03b2\u03c0/2 = " + (trueAng * 180 / Math.PI).toFixed(1) + "\u00b0" +
+                  (Math.abs(trueAng - inc) > 1e-3 ? "  (drawn clamped)" : ""),
+                  W * 0.02, H * 0.10);
+  }
+
+  function render() {
+    var beta = betaVal;
+    var sol = get(beta);
+    document.getElementById("vB").textContent = beta.toFixed(4);
+
+    drawPlot(beta, sol);
+    drawGeo(beta);
+
+    var m = beta / (2 - beta);
+    document.getElementById("ro").innerHTML = [
+      ["f\u2033(0)", sol.s.toFixed(5)],
+      ["m", m.toFixed(4)],
+      ["wedge \u03b2\u03c0", (beta * 180).toFixed(1) + "\u00b0"],
+      ["\u03b4*", sol.ds.toFixed(4)],
+      ["\u03b8", sol.th.toFixed(4)],
+      ["H", sol.H.toFixed(4)]
+    ].map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("");
+
+    var w = document.getElementById("warn");
+    if (beta <= BSEP + 1e-4) {
+      w.hidden = false;
+      w.textContent = "At \u03b2 = \u22120.1988 the wall shear reaches zero: the profile arrives at the surface with no slope. " +
+        "Any stronger adverse gradient has no attached similarity solution at all \u2014 the layer separates.";
+    } else if (sol.H > 3.5) {
+      w.hidden = false;
+      w.textContent = "Shape factor H = " + sol.H.toFixed(2) + ". Above roughly H = 3.5 a laminar layer is close to " +
+        "letting go; separation arrives at H \u2248 4.03.";
+    } else w.hidden = true;
+
+    document.getElementById("cap").textContent =
+      beta > 0.001 ? "Favorable gradient \u2014 the flow accelerates and the profile is full."
+      : beta < -0.001 ? "Adverse gradient \u2014 the flow decelerates and an inflection point appears away from the wall."
+      : "Zero gradient \u2014 the Blasius flat-plate profile.";
+  }
+
+  document.getElementById("note").innerHTML =
+    "<strong>One equation, every wedge.</strong> Setting <code>U\u2091 \u221d x\u1d50</code> collapses the boundary layer " +
+    "onto a single ODE with <code>\u03b2 = 2m/(m+1)</code>. <code>\u03b2 = 1</code> is the stagnation point, " +
+    "<code>\u03b2 = 0</code> the flat plate, and negative <code>\u03b2</code> a decelerating flow. The wall shear " +
+    "<code>f\u2033(0)</code> falls monotonically with <code>\u03b2</code> and hits zero at <code>\u03b2 = \u22120.198838</code> " +
+    "\u2014 the only place a similarity solution can separate.";
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-b]"), function (b) {
+    b.addEventListener("click", function () {
+      betaVal = parseFloat(b.getAttribute("data-b"));
+      el.B.value = betaVal; render();
+    });
+  });
+  el.B.addEventListener("input", function () { betaVal = parseFloat(el.B.value); render(); });
+  el.ref.addEventListener("input", render);
+  el.shear.addEventListener("input", render);
+
+  var lastW = -1;
+  function resize() {
+    var w = Math.max(280, plot.parentElement.clientWidth);
+    if (w === lastW) return;
+    lastW = w;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    plot.style.height = Math.round(w * 0.69) + "px";
+    plot.width = Math.round(w * dpr); plot.height = Math.round(w * 0.69 * dpr);
+    geo.style.height = Math.round(w * 0.25) + "px";
+    geo.width = Math.round(w * dpr); geo.height = Math.round(w * 0.25 * dpr);
+    render();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(plot.parentElement);
+  else window.addEventListener("resize", resize);
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", render);
+  }
+  resize();
+
+  window.__verify = function () {
+    var o = [];
+    var b0 = get(0), b1 = get(1), bs = get(BSEP);
+    o.push("f''(0) beta=0     = " + b0.s.toFixed(6) + "   [0.469600]");
+    o.push("f''(0) beta=1     = " + b1.s.toFixed(6) + "   [1.232588]");
+    o.push("f''(0) beta=-0.1988 = " + bs.s.toFixed(6) + " [0.000000]");
+    o.push("Blasius  delta* = " + b0.ds.toFixed(5) + "  [1.21678]");
+    o.push("Blasius  theta  = " + b0.th.toFixed(5) + "  [0.46960]");
+    o.push("Blasius  H      = " + b0.H.toFixed(5) + "  [2.59110]");
+    o.push("Stagn.   H      = " + b1.H.toFixed(5) + "  [2.2162]");
+    o.push("Separ.   H      = " + bs.H.toFixed(5) + "  [4.029]");
+    return o.join("\n");
+  };
+})();
+</script>
+</body>
+</html>

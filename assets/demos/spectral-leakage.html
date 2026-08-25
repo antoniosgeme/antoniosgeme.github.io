@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spectral Leakage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:#f2f4f7; --panel:#ffffff; --panel-sunk:#eef1f5;
+    --ink:#0e1319; --ink-soft:#4a5763; --ink-faint:#8794a1;
+    --rule:#d7dee6; --rule-soft:#e6ebf0;
+    --accent:#1f7a8c; --accent-soft:#e2eff2; --track:#d2dae2;
+    --grid:#e6ebf0; --sig:#8794a1; --winc:#c8622f; --spec:#1f7a8c;
+    --fill:#e2eff2; --mark:#b5384a;
+    --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0b1016; --panel:#141b23; --panel-sunk:#101820;
+      --ink:#e8eef4; --ink-soft:#9dabb8; --ink-faint:#64727f;
+      --rule:#26313b; --rule-soft:#1c252e;
+      --accent:#4bb3c7; --accent-soft:#14313a; --track:#2a3540;
+      --grid:#1e2831; --sig:#5a6875; --winc:#e08a52; --spec:#4bb3c7;
+      --fill:#15303a; --mark:#e0687b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0b1016; --panel:#141b23; --panel-sunk:#101820;
+    --ink:#e8eef4; --ink-soft:#9dabb8; --ink-faint:#64727f;
+    --rule:#26313b; --rule-soft:#1c252e;
+    --accent:#4bb3c7; --accent-soft:#14313a; --track:#2a3540;
+    --grid:#1e2831; --sig:#5a6875; --winc:#e08a52; --spec:#4bb3c7;
+    --fill:#15303a; --mark:#e0687b;
+  }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:14px 14px 20px; display:flex; flex-direction:column; gap:24px; }
+  header { display:flex; flex-direction:column; gap:6px; }
+  h1 { margin:0; font-size:25px; font-weight:600; letter-spacing:-0.015em; text-wrap:balance; }
+  .sub { margin:0; color:var(--ink-soft); max-width:68ch; }
+
+  .stage { display:grid; grid-template-columns:minmax(0,1fr) 268px; gap:20px; align-items:start; }
+  @media (max-width:820px) { .stage { grid-template-columns:minmax(0,1fr); } }
+  .left { display:flex; flex-direction:column; gap:20px; min-width:0; }
+
+  .field { background:var(--panel); border:1px solid var(--rule); overflow:hidden; }
+  .field canvas { display:block; width:100%; }
+  .cap { padding:9px 12px; border-top:1px solid var(--rule-soft); font-family:var(--mono); font-size:11px; color:var(--ink-soft); }
+
+  .rail { display:flex; flex-direction:column; background:var(--panel); border:1px solid var(--rule); }
+  .group { padding:14px 14px 16px; border-bottom:1px solid var(--rule-soft); }
+  .group:last-child { border-bottom:0; }
+  .glabel { font-size:10px; font-weight:600; letter-spacing:0.11em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:11px; }
+
+  select { width:100%; font-family:var(--sans); font-size:13px; padding:7px 8px; background:var(--panel-sunk); color:var(--ink); border:1px solid var(--rule); cursor:pointer; }
+  select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  .seg { display:grid; grid-template-columns:1fr 1fr 1fr; border:1px solid var(--rule); }
+  .seg button { border:0; border-right:1px solid var(--rule); background:var(--panel-sunk); color:var(--ink); text-align:center; padding:8px 4px; font-size:12.5px; font-family:var(--mono); cursor:pointer; }
+  .seg button:last-child { border-right:0; }
+  .seg button[aria-pressed="true"] { background:var(--accent); color:#fff; }
+
+  .param { display:flex; flex-direction:column; gap:5px; margin-bottom:13px; }
+  .param:last-child { margin-bottom:0; }
+  .param.off { opacity:0.38; pointer-events:none; }
+  .prow { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .pname { font-size:13px; color:var(--ink-soft); }
+  .pname em { font-family:var(--serif); font-style:italic; color:var(--ink); }
+  .pval { font-family:var(--mono); font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--ink); }
+
+  input[type="range"] { -webkit-appearance:none; appearance:none; width:100%; height:3px; background:var(--track); outline:none; margin:6px 0 0; cursor:pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--accent); cursor:pointer; }
+  input[type="range"]::-moz-range-thumb { width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--panel); box-shadow:0 0 0 1px var(--accent); cursor:pointer; }
+  input[type="range"]:focus-visible, input[type="checkbox"]:focus-visible, button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  .checks { display:flex; flex-direction:column; gap:9px; }
+  label.check { display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; }
+  label.check input { accent-color:var(--accent); width:15px; height:15px; margin:0; cursor:pointer; }
+
+  .readout { display:grid; grid-template-columns:auto 1fr; gap:5px 12px; font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums; }
+  .readout dt { color:var(--ink-faint); }
+  .readout dd { margin:0; text-align:right; }
+
+  .eq { background:var(--panel); border:1px solid var(--rule); padding:16px 18px; display:flex; flex-direction:column; gap:9px; }
+  .eqline { font-family:var(--serif); font-size:17px; overflow-x:auto; white-space:nowrap; padding-bottom:2px; }
+  .eqline i { font-style:italic; }
+  sub, sup { font-size:0.68em; }
+  .eqnote { font-size:13px; color:var(--ink-soft); max-width:78ch; }
+  .eqnote code { font-family:var(--mono); font-size:0.9em; color:var(--ink); }
+  .eqnote strong { font-weight:600; color:var(--ink); }
+  footer { font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule-soft); padding-top:14px; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stage">
+    <div class="left">
+      <div class="field">
+        <canvas id="time" width="900" height="230"></canvas>
+        <div class="cap" id="capT">&nbsp;</div>
+      </div>
+      <div class="field">
+        <canvas id="spec" width="900" height="470"></canvas>
+        <div class="cap" id="capS">&nbsp;</div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="group">
+        <div class="glabel">Window</div>
+        <select id="win">
+          <option value="rect">Rectangular (none)</option>
+          <option value="hann" selected>Hann</option>
+          <option value="hamming">Hamming</option>
+          <option value="blackman">Blackman</option>
+          <option value="bh4">Blackman-Harris</option>
+          <option value="flattop">Flat-top</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Record length</div>
+        <div class="seg">
+          <button data-n="128" aria-pressed="false">128</button>
+          <button data-n="256" aria-pressed="true">256</button>
+          <button data-n="512" aria-pressed="false">512</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Tone</div>
+        <div class="param">
+          <div class="prow"><span class="pname">Offset from bin centre</span><span class="pval" id="vOff">0.00</span></div>
+          <input type="range" id="sOff" min="0" max="1" step="0.005" value="0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Second tone</div>
+        <div class="checks" style="margin-bottom:12px">
+          <label class="check"><input type="checkbox" id="cTwo"> Add a weak neighbour</label>
+        </div>
+        <div class="param" id="pSep">
+          <div class="prow"><span class="pname">Separation</span><span class="pval" id="vSep">12 bins</span></div>
+          <input type="range" id="sSep" min="2" max="60" step="1" value="12">
+        </div>
+        <div class="param" id="pLev">
+          <div class="prow"><span class="pname">Level</span><span class="pval" id="vLev">&#8722;50 dB</span></div>
+          <input type="range" id="sLev" min="-110" max="-6" step="1" value="-50">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">This window</div>
+        <dl class="readout" id="ro"></dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="eq">
+    <div class="eqline">
+      <i>X</i>(<i>k</i>) = &#8721;<sub><i>n</i></sub> <i>w</i>[<i>n</i>] <i>x</i>[<i>n</i>] e<sup>&#8722;2&#960;<i>ikn</i>/<i>N</i></sup>
+    </div>
+    <p class="eqnote" id="note"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var TAU = Math.PI * 2;
+
+  var timeC = document.getElementById("time"), tctx = timeC.getContext("2d");
+  var specC = document.getElementById("spec"), sctx = specC.getContext("2d");
+  var N = 256, PAD = 16;
+
+  var el = {
+    win: document.getElementById("win"),
+    off: document.getElementById("sOff"),
+    two: document.getElementById("cTwo"),
+    sep: document.getElementById("sSep"),
+    lev: document.getElementById("sLev")
+  };
+  function cv(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  /* ---------- FFT ---------- */
+  function fft(re, im) {
+    var n = re.length, i, j, bit, t;
+    for (i = 1, j = 0; i < n; i++) {
+      bit = n >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) { t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+    }
+    for (var len = 2; len <= n; len <<= 1) {
+      var ang = -TAU / len, wr = Math.cos(ang), wi = Math.sin(ang), half = len >> 1;
+      for (var s = 0; s < n; s += len) {
+        var cr = 1, ci = 0;
+        for (var k = 0; k < half; k++) {
+          var ar = re[s + k], ai = im[s + k];
+          var br = re[s + k + half] * cr - im[s + k + half] * ci;
+          var bi = re[s + k + half] * ci + im[s + k + half] * cr;
+          re[s + k] = ar + br; im[s + k] = ai + bi;
+          re[s + k + half] = ar - br; im[s + k + half] = ai - bi;
+          var ncr = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = ncr;
+        }
+      }
+    }
+  }
+
+  /* ---------- windows (periodic / DFT-even) ---------- */
+  var COEF = {
+    rect:     [1],
+    hann:     [0.5, 0.5],
+    hamming:  [0.54, 0.46],
+    blackman: [0.42, 0.5, 0.08],
+    bh4:      [0.35875, 0.48829, 0.14128, 0.01168],
+    flattop:  [0.21557895, 0.41663158, 0.277263158, 0.083578947, 0.006947368]
+  };
+  var REF = {                        // published peak sidelobe / main-lobe width (bins, null-to-null)
+    rect:     { sl: -13.3, ml: 2 },
+    hann:     { sl: -31.5, ml: 4 },
+    hamming:  { sl: -42.7, ml: 4 },
+    blackman: { sl: -58.1, ml: 6 },
+    bh4:      { sl: -92.0, ml: 8 },
+    flattop:  { sl: -93.6, ml: 10 }
+  };
+  var NAME = {
+    rect: "Rectangular", hann: "Hann", hamming: "Hamming",
+    blackman: "Blackman", bh4: "Blackman-Harris", flattop: "Flat-top"
+  };
+
+  function window_(type, n) {
+    var c = COEF[type], w = new Float64Array(n);
+    for (var i = 0; i < n; i++) {
+      var v = c[0];
+      for (var m = 1; m < c.length; m++) v += (m % 2 ? -1 : 1) * c[m] * Math.cos(m * TAU * i / n);
+      w[i] = v;
+    }
+    return w;
+  }
+
+  // Transform of the window alone: coherent gain, main-lobe width, peak sidelobe.
+  function stats(type, n) {
+    var M = 8192, w = window_(type, n);
+    var re = new Float64Array(M), im = new Float64Array(M);
+    var cg = 0;
+    for (var i = 0; i < n; i++) { re[i] = w[i]; cg += w[i]; }
+    cg /= n;
+    fft(re, im);
+    var mag = new Float64Array(M / 2);
+    for (var k = 0; k < M / 2; k++) mag[k] = Math.hypot(re[k], im[k]);
+    var peak = mag[0];
+    var r = M / n;                                   // samples per DFT bin
+    // First true null: a deep local minimum. A flat-top window's transform does not start
+    // out decreasing, so "walk while falling" would stop at the first sample.
+    var k1 = 1;
+    while (k1 < M / 2 - 2) {
+      if (mag[k1] < mag[k1 - 1] && mag[k1] <= mag[k1 + 1] && mag[k1] < 0.05 * peak) break;
+      k1++;
+    }
+    var side = 0;
+    for (var k2 = k1; k2 < M / 2; k2++) if (mag[k2] > side) side = mag[k2];
+    return {
+      cg: cg,
+      ml: 2 * k1 / r,
+      sl: 20 * Math.log10(Math.max(side, 1e-300) / peak),
+      enbw: (function () { var s1 = 0, s2 = 0; for (var q = 0; q < n; q++) { s1 += w[q]; s2 += w[q] * w[q]; } return n * s2 / (s1 * s1); })()
+    };
+  }
+
+  function spectrum() {
+    var type = el.win.value, w = window_(type, N);
+    var M = N * PAD;
+    var re = new Float64Array(M), im = new Float64Array(M);
+    var k0 = Math.round(N / 8);
+    var f1 = k0 + parseFloat(el.off.value);
+    var two = el.two.checked;
+    var f2 = f1 + parseFloat(el.sep.value);
+    var a2 = Math.pow(10, parseFloat(el.lev.value) / 20);
+    for (var n = 0; n < N; n++) {
+      var v = Math.cos(TAU * f1 * n / N);
+      if (two) v += a2 * Math.cos(TAU * f2 * n / N + 0.7);
+      re[n] = v * w[n];
+    }
+    fft(re, im);
+    var half = M / 2, mag = new Float64Array(half), peak = 0;
+    for (var k = 0; k < half; k++) { mag[k] = Math.hypot(re[k], im[k]); if (mag[k] > peak) peak = mag[k]; }
+    var db = new Float64Array(half);
+    for (var q = 0; q < half; q++) db[q] = 20 * Math.log10(Math.max(mag[q], 1e-300) / peak);
+    return { db: db, w: w, f1: f1, f2: f2, two: two, k0: k0, a2: a2 };
+  }
+
+  /* ---------- drawing ---------- */
+  function drawTime(S) {
+    var W = timeC.width, H = timeC.height, dpr = W / timeC.clientWidth;
+    tctx.clearRect(0, 0, W, H);
+    tctx.fillStyle = cv("--panel"); tctx.fillRect(0, 0, W, H);
+    var m = { l: 46 * dpr, r: 16 * dpr, t: 14 * dpr, b: 20 * dpr };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b, mid = m.t + ph / 2;
+
+    tctx.strokeStyle = cv("--grid"); tctx.lineWidth = Math.max(1, dpr * 0.8);
+    tctx.beginPath(); tctx.moveTo(m.l, mid); tctx.lineTo(m.l + pw, mid); tctx.stroke();
+
+    var amp = ph * 0.44;
+    function path(fn, col, w) {
+      tctx.beginPath();
+      for (var i = 0; i < N; i++) {
+        var x = m.l + i / (N - 1) * pw, y = mid - fn(i) * amp;
+        if (i === 0) tctx.moveTo(x, y); else tctx.lineTo(x, y);
+      }
+      tctx.strokeStyle = col; tctx.lineWidth = w; tctx.stroke();
+    }
+    var raw = function (i) { var v = Math.cos(TAU * S.f1 * i / N); if (S.two) v += S.a2 * Math.cos(TAU * S.f2 * i / N + 0.7); return v * 0.9; };
+    path(raw, cv("--sig"), Math.max(1, dpr * 0.9));
+    path(function (i) { return S.w[i] * 0.9; }, cv("--winc"), Math.max(1.8, dpr * 1.4));
+    path(function (i) { return -S.w[i] * 0.9; }, cv("--winc"), Math.max(1.8, dpr * 1.4));
+    path(function (i) { return raw(i) * S.w[i]; }, cv("--spec"), Math.max(1.8, dpr * 1.4));
+
+    tctx.fillStyle = cv("--ink-faint");
+    tctx.font = "500 " + 11 * dpr + "px IBM Plex Mono, monospace";
+    tctx.textAlign = "right"; tctx.textBaseline = "middle";
+    tctx.fillText("+1", m.l - 7 * dpr, mid - amp);
+    tctx.fillText("0", m.l - 7 * dpr, mid);
+    tctx.fillText("\u22121", m.l - 7 * dpr, mid + amp);
+  }
+
+  function drawSpec(S, st) {
+    var W = specC.width, H = specC.height, dpr = W / specC.clientWidth;
+    sctx.clearRect(0, 0, W, H);
+    sctx.fillStyle = cv("--panel"); sctx.fillRect(0, 0, W, H);
+    var m = { l: 52 * dpr, r: 18 * dpr, t: 18 * dpr, b: 38 * dpr };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b;
+    var DBLO = -140, DBHI = 5, KMAX = N / 2;
+    var X = function (k) { return m.l + k / KMAX * pw; };
+    var Y = function (d) { return m.t + ph - (d - DBLO) / (DBHI - DBLO) * ph; };
+
+    sctx.strokeStyle = cv("--grid"); sctx.lineWidth = Math.max(1, dpr * 0.8);
+    for (var d = DBLO; d <= 0; d += 20) { sctx.beginPath(); sctx.moveTo(m.l, Y(d)); sctx.lineTo(m.l + pw, Y(d)); sctx.stroke(); }
+    var kstep = KMAX / 8;
+    for (var k = 0; k <= KMAX; k += kstep) { sctx.beginPath(); sctx.moveTo(X(k), m.t); sctx.lineTo(X(k), m.t + ph); sctx.stroke(); }
+
+    sctx.fillStyle = cv("--ink-faint");
+    sctx.font = "500 " + 11 * dpr + "px IBM Plex Mono, monospace";
+    sctx.textAlign = "right"; sctx.textBaseline = "middle";
+    for (var d2 = DBLO; d2 <= 0; d2 += 20) sctx.fillText(String(d2), m.l - 8 * dpr, Y(d2));
+    sctx.textAlign = "center"; sctx.textBaseline = "top";
+    for (var k2 = 0; k2 <= KMAX; k2 += kstep) sctx.fillText(String(Math.round(k2)), X(k2), m.t + ph + 7 * dpr);
+    sctx.fillText("DFT bin", m.l + pw / 2, m.t + ph + 21 * dpr);
+    sctx.save(); sctx.translate(14 * dpr, m.t + ph / 2); sctx.rotate(-Math.PI / 2);
+    sctx.textBaseline = "middle"; sctx.fillText("dB", 0, 0); sctx.restore();
+
+    // true tone positions
+    [[S.f1, 0], [S.f2, parseFloat(el.lev.value)]].forEach(function (t, idx) {
+      if (idx === 1 && !S.two) return;
+      sctx.strokeStyle = cv("--mark"); sctx.lineWidth = Math.max(1, dpr);
+      sctx.setLineDash([4 * dpr, 4 * dpr]);
+      sctx.beginPath(); sctx.moveTo(X(t[0]), m.t); sctx.lineTo(X(t[0]), m.t + ph); sctx.stroke();
+      sctx.setLineDash([]);
+    });
+
+    // spectrum
+    sctx.beginPath();
+    var half = S.db.length;
+    for (var i = 0; i < half; i++) {
+      var kk = i / PAD;
+      if (kk > KMAX) break;
+      var y = Y(Math.max(S.db[i], DBLO));
+      if (i === 0) sctx.moveTo(X(kk), y); else sctx.lineTo(X(kk), y);
+    }
+    sctx.strokeStyle = cv("--spec"); sctx.lineWidth = Math.max(1.6, dpr * 1.2); sctx.stroke();
+
+    // measured sidelobe floor of this window
+    sctx.strokeStyle = cv("--winc"); sctx.lineWidth = Math.max(1, dpr);
+    sctx.setLineDash([7 * dpr, 5 * dpr]);
+    sctx.beginPath(); sctx.moveTo(m.l, Y(st.sl)); sctx.lineTo(m.l + pw, Y(st.sl)); sctx.stroke();
+    sctx.setLineDash([]);
+    sctx.fillStyle = cv("--winc"); sctx.textAlign = "left"; sctx.textBaseline = "bottom";
+    sctx.fillText("peak sidelobe " + st.sl.toFixed(1) + " dB", m.l + 8 * dpr, Y(st.sl) - 4 * dpr);
+  }
+
+  function render() {
+    var S = spectrum();
+    var st = stats(el.win.value, N);
+    drawTime(S); drawSpec(S, st);
+
+    document.getElementById("vOff").textContent = parseFloat(el.off.value).toFixed(2);
+    document.getElementById("vSep").textContent = el.sep.value + " bins";
+    document.getElementById("vLev").textContent = el.lev.value + " dB";
+    document.getElementById("pSep").classList.toggle("off", !el.two.checked);
+    document.getElementById("pLev").classList.toggle("off", !el.two.checked);
+
+    var ref = REF[el.win.value];
+    document.getElementById("ro").innerHTML = [
+      ["measured", st.sl.toFixed(1) + " dB"],
+      ["published", ref.sl.toFixed(1) + " dB"],
+      ["main lobe", st.ml.toFixed(2) + " bins"],
+      ["coherent gain", st.cg.toFixed(4)],
+      ["ENBW", st.enbw.toFixed(4) + " bins"]
+    ].map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("");
+
+    var off = parseFloat(el.off.value);
+    document.getElementById("capT").textContent =
+      off < 0.005
+        ? "Whole number of cycles in the record \u2014 the periodic extension joins seamlessly."
+        : "Fractional cycle count: the record's end does not meet its beginning, and that seam is what leaks.";
+    document.getElementById("capS").textContent =
+      NAME[el.win.value] + ", N = " + N + ", tone at bin " + S.f1.toFixed(2) +
+      (S.two ? ", neighbour at bin " + S.f2.toFixed(2) + " at " + el.lev.value + " dB" : "");
+
+    document.getElementById("note").innerHTML =
+      "<strong>The trade you cannot avoid.</strong> Every window buys lower sidelobes with a wider main lobe. " +
+      "Rectangular has the narrowest main lobe (2 bins) and the worst leakage (\u221213 dB); Blackman-Harris pushes " +
+      "sidelobes below \u221290 dB but smears the peak over 8 bins. Turn on the weak neighbour, set it to \u221250 dB, and " +
+      "switch between them: rectangular loses it entirely in the skirt of the strong tone, Hann recovers it, and " +
+      "flat-top finds it but can no longer tell you precisely where it sits.";
+  }
+
+  el.win.addEventListener("change", render);
+  ["off", "two", "sep", "lev"].forEach(function (k) { el[k].addEventListener("input", render); });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-n]"), function (b) {
+    b.addEventListener("click", function () {
+      N = parseInt(b.getAttribute("data-n"), 10);
+      Array.prototype.forEach.call(document.querySelectorAll("[data-n]"), function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      render();
+    });
+  });
+
+  var lastW = -1;
+  function resize() {
+    var w = Math.max(280, timeC.parentElement.clientWidth);
+    if (w === lastW) return;
+    lastW = w;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    timeC.style.height = Math.round(w * 0.26) + "px";
+    timeC.width = Math.round(w * dpr); timeC.height = Math.round(w * 0.26 * dpr);
+    specC.style.height = Math.round(w * 0.52) + "px";
+    specC.width = Math.round(w * dpr); specC.height = Math.round(w * 0.52 * dpr);
+    render();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(timeC.parentElement);
+  else window.addEventListener("resize", resize);
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", render);
+  }
+  resize();
+
+  window.__verify = function () {
+    var o = [];
+    Object.keys(REF).forEach(function (t) {
+      var s = stats(t, 512), r = REF[t];
+      o.push(t.padEnd(9) + " sidelobe " + s.sl.toFixed(1).padStart(7) + " dB  [" + r.sl.toFixed(1) +
+             "]   main lobe " + s.ml.toFixed(2) + " bins  [" + r.ml + "]   CG " + s.cg.toFixed(4));
+    });
+    o.push("");
+    o.push("coherent gain refs: rect 1.0, hann 0.5, hamming 0.54, blackman 0.42, bh4 0.35875, flattop 0.2156");
+    o.push("ENBW refs (bins):   rect 1.0, hann 1.5, hamming 1.3628, blackman 1.7269");
+    ["rect", "hann", "hamming", "blackman"].forEach(function (t) {
+      o.push("  ENBW " + t.padEnd(9) + stats(t, 512).enbw.toFixed(4));
+    });
+    return o.join("\n");
+  };
+})();
+</script>
+</body>
+</html>

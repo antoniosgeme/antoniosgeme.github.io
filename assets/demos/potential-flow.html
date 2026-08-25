@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Potential Flow Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:      #f2f4f7;
+    --panel:       #ffffff;
+    --panel-sunk:  #eef1f5;
+    --ink:         #0e1319;
+    --ink-soft:    #4a5763;
+    --ink-faint:   #8794a1;
+    --rule:        #d7dee6;
+    --rule-soft:   #e6ebf0;
+    --accent:      #1f7a8c;
+    --accent-soft: #e2eff2;
+    --track:       #d2dae2;
+    --body-fill:   #2b3742;
+    --body-edge:   #f2f4f7;
+
+    --sans:  "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:  "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0b1016;
+      --panel:       #141b23;
+      --panel-sunk:  #101820;
+      --ink:         #e8eef4;
+      --ink-soft:    #9dabb8;
+      --ink-faint:   #64727f;
+      --rule:        #26313b;
+      --rule-soft:   #1c252e;
+      --accent:      #4bb3c7;
+      --accent-soft: #14313a;
+      --track:       #2a3540;
+      --body-fill:   #0b1016;
+      --body-edge:   #6b7c8a;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0b1016;
+    --panel:       #141b23;
+    --panel-sunk:  #101820;
+    --ink:         #e8eef4;
+    --ink-soft:    #9dabb8;
+    --ink-faint:   #64727f;
+    --rule:        #26313b;
+    --rule-soft:   #1c252e;
+    --accent:      #4bb3c7;
+    --accent-soft: #14313a;
+    --track:       #2a3540;
+    --body-fill:   #0b1016;
+    --body-edge:   #6b7c8a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  header { display: flex; flex-direction: column; gap: 6px; }
+
+  h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .sub {
+    margin: 0;
+    color: var(--ink-soft);
+    max-width: 66ch;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 268px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 820px) {
+    .stage { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .field {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  canvas { display: block; width: 100%; height: auto; }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-top: 1px solid var(--rule-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ramp {
+    flex: 1;
+    height: 8px;
+    border: 1px solid var(--rule);
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+
+  .group { padding: 14px 14px 16px; border-bottom: 1px solid var(--rule-soft); }
+  .group:last-child { border-bottom: 0; }
+
+  .glabel {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 11px;
+  }
+
+  .checks { display: flex; flex-direction: column; gap: 9px; }
+
+  label.check {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-size: 13.5px;
+  }
+
+  label.check input { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; cursor: pointer; }
+
+  .param { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
+  .param:last-child { margin-bottom: 0; }
+
+  .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+
+  .pname { font-size: 13px; color: var(--ink-soft); }
+  .pname em { font-family: var(--serif); font-style: italic; color: var(--ink); }
+
+  .pval {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--track);
+    outline: none;
+    margin: 6px 0 0;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--panel);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--panel);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+
+  input[type="range"]:focus-visible,
+  button:focus-visible,
+  label.check input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .btns { display: flex; flex-direction: column; gap: 7px; }
+
+  button {
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 8px 11px;
+    background: var(--panel-sunk);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: left;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+
+  button:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent); }
+  button:disabled { color: var(--ink-faint); cursor: not-allowed; }
+
+  .readout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .readout dt { color: var(--ink-faint); }
+  .readout dd { margin: 0; text-align: right; }
+
+  .eq {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .eqline {
+    font-family: var(--serif);
+    font-size: 18px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .term { transition: opacity 140ms ease, color 140ms ease; }
+  .term.off { opacity: 0.24; }
+  .term i { font-style: italic; }
+  sub, sup { font-size: 0.68em; }
+
+  .eqnote { font-size: 13px; color: var(--ink-soft); max-width: 78ch; }
+  .eqnote code { font-family: var(--mono); font-size: 0.9em; color: var(--ink); }
+
+  .warn {
+    margin: 0;
+    padding: 9px 12px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+  .warn[hidden] { display: none; }
+
+  footer { font-size: 12.5px; color: var(--ink-faint); border-top: 1px solid var(--rule-soft); padding-top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stage">
+    <div class="field">
+      <canvas id="cv" width="900" height="900" aria-label="Potential flow pressure field and streamlines"></canvas>
+      <div class="legend">
+        <span id="cpLo">&#8722;3.0</span>
+        <div class="ramp" id="ramp"></div>
+        <span id="cpHi">1.0</span>
+        <span style="color:var(--ink-faint)">C<sub>p</sub></span>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="group">
+        <div class="glabel">Components</div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="cUni" checked> Uniform stream</label>
+          <label class="check"><input type="checkbox" id="cVor" checked> Vortex</label>
+          <label class="check"><input type="checkbox" id="cDou" checked> Doublet</label>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Parameters</div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Angle of attack <em>&#945;</em></span><span class="pval" id="vAlpha">0.0&#176;</span></div>
+          <input type="range" id="sAlpha" min="-25" max="25" step="0.5" value="0">
+        </div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Freestream <em>U</em></span><span class="pval" id="vU">1.00</span></div>
+          <input type="range" id="sU" min="0.1" max="3" step="0.01" value="1">
+        </div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Circulation <em>&#915;</em></span><span class="pval" id="vG">0.00</span></div>
+          <input type="range" id="sG" min="-25" max="25" step="0.05" value="0">
+        </div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Doublet <em>&#954;</em></span><span class="pval" id="vK">6.28</span></div>
+          <input type="range" id="sK" min="0" max="40" step="0.05" value="6.283">
+        </div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Center <em>x</em><sub>0</sub></span><span class="pval" id="vX">0.00</span></div>
+          <input type="range" id="sX" min="-0.6" max="0.6" step="0.005" value="0">
+        </div>
+
+        <div class="param">
+          <div class="prow"><span class="pname">Center <em>y</em><sub>0</sub></span><span class="pval" id="vY">0.00</span></div>
+          <input type="range" id="sY" min="-0.6" max="0.6" step="0.005" value="0">
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Display</div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="cBody" checked> Fill body</label>
+          <label class="check"><input type="checkbox" id="cStream" checked> Streamlines</label>
+          <label class="check"><input type="checkbox" id="cJouk"> Joukowski transform</label>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Presets</div>
+        <div class="btns">
+          <button id="bKutta">Apply Kutta condition</button>
+          <button id="bAirfoil">Cambered airfoil</button>
+          <button id="bCyl">Circular cylinder</button>
+          <button id="bReset">Reset</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel">Derived</div>
+        <dl class="readout">
+          <dt>radius a</dt><dd id="rA">1.000</dd>
+          <dt>TE point b</dt><dd id="rB">1.000</dd>
+          <dt>C<sub>L</sub></dt><dd id="rCL">0.000</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <p class="warn" id="warn" hidden></p>
+
+  <div class="eq">
+    <div class="eqline">
+      <span class="term" id="tU"><i>F</i>(<i>z</i>) = <i>U</i>e<sup>&#8722;<i>i&#945;</i></sup>(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
+      <span class="term" id="tV"> &#8722; <i>i</i><i>&#915;</i>/2<i>&#960;</i> &#183; ln(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
+      <span class="term" id="tD"> + <i>&#954;</i>e<sup><i>i&#945;</i></sup>/2<i>&#960;</i>(<i>z</i>&#8722;<i>z</i><sub>0</sub>)</span>
+    </div>
+    <p class="eqnote">
+      The streamfunction <code>&#968; = Im F</code> is plotted directly as contours, and the pressure follows from
+      <code>C_p = 1 &#8722; |dF/d&#950;|&#178;/U&#178;</code>. A closed body appears only when the doublet balances the stream:
+      at <code>&#954; = 2&#960;Ua&#178;</code> the circle of radius <code>a</code> becomes a streamline. Turn on the Joukowski
+      transform to map that circle to an airfoil, then apply the Kutta condition to fix the circulation that
+      makes the flow leave the trailing edge smoothly.
+    </p>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var TAU = Math.PI * 2;
+
+  // Spectral colormap, 21 stops, RGBA. Low Cp (fast flow) at the red end.
+  var CMAP = new Uint8Array([
+    158,1,66,255, 185,31,72,255, 209,60,75,255, 228,86,73,255, 240,112,74,255,
+    248,142,83,255, 252,172,99,255, 253,198,118,255, 254,221,141,255, 254,238,163,255,
+    251,248,176,255, 241,249,171,255, 224,243,160,255, 200,233,159,255, 169,220,162,255,
+    137,207,165,255, 105,189,169,255, 78,164,176,255, 66,136,181,255, 74,108,174,255,
+    94,79,162,255
+  ]);
+
+  var VERT = [
+    "attribute vec2 a_clip;",
+    "varying vec2 v_zeta;",
+    "uniform float u_half;",
+    "void main() {",
+    "  gl_Position = vec4(a_clip, 0.0, 1.0);",
+    "  v_zeta = a_clip * u_half;",
+    "}"
+  ].join("\n");
+
+  var FRAG = [
+    "precision highp float;",
+    "varying vec2 v_zeta;",
+    "uniform float u_U, u_alpha, u_Gamma, u_kappa, u_a, u_b;",
+    "uniform vec2  u_z0;",
+    "uniform bool  u_hasU, u_hasV, u_hasD, u_jouk, u_body, u_stream;",
+    "uniform float u_psiStep, u_pxWorld, u_cpLo, u_cpHi, u_vref;",
+    "uniform vec3  u_bodyFill, u_bodyEdge;",
+    "uniform sampler2D u_cmap;",
+    "const float PI = 3.14159265359;",
+
+    "vec2 cmul(vec2 a, vec2 b){ return vec2(a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x); }",
+    "vec2 cdiv(vec2 a, vec2 b){ float d = max(dot(b,b), 1e-12); return vec2(a.x*b.x + a.y*b.y, a.y*b.x - a.x*b.y)/d; }",
+    "vec2 csqrt(vec2 z){",
+    "  float r = length(z);",
+    "  float s = z.y >= 0.0 ? 1.0 : -1.0;",
+    "  return vec2(sqrt(max(0.5*(r + z.x), 0.0)), s*sqrt(max(0.5*(r - z.x), 0.0)));",
+    "}",
+
+    "void main() {",
+    "  vec2 zeta = v_zeta;",
+    "  vec2 z = zeta;",
+    "  if (u_jouk) {",
+    "    vec2 disc = csqrt(cmul(zeta, zeta) - vec2(4.0*u_b*u_b, 0.0));",
+    "    vec2 p = 0.5*(zeta + disc);",
+    "    vec2 m = 0.5*(zeta - disc);",
+    "    z = dot(p,p) >= dot(m,m) ? p : m;",
+    "  }",
+    "  vec2 d = z - u_z0;",
+    "  float r2 = max(dot(d,d), 1e-9);",
+    "  float ca = cos(u_alpha), sa = sin(u_alpha);",
+
+    "  float psi = 0.0;",
+    "  vec2 vel = vec2(0.0);",   // dF/dz as (u, -v)
+
+    "  if (u_hasU) {",
+    "    psi += u_U * (d.y*ca - d.x*sa);",
+    "    vel += u_U * vec2(ca, -sa);",
+    "  }",
+    "  if (u_hasV) {",
+    "    psi += -u_Gamma/TAUF * 0.5*log(r2);",
+    "    vel += (u_Gamma/TAUF) * cdiv(vec2(0.0,-1.0), d);",
+    "  }",
+    "  if (u_hasD) {",
+    "    psi += (u_kappa/TAUF) * (sa*d.x - ca*d.y) / r2;",
+    "    vel += -(u_kappa/TAUF) * cdiv(vec2(ca, sa), cmul(d, d));",
+    "  }",
+
+    "  if (u_jouk) {",
+    "    vec2 dz = vec2(1.0, 0.0) - cdiv(vec2(u_b*u_b, 0.0), cmul(z, z));",
+    "    vel = cdiv(vel, dz);",
+    "  }",
+
+    "  float speed = length(vel);",
+    "  float cp = 1.0 - (speed*speed)/(u_vref*u_vref);",
+    "  float t = clamp((cp - u_cpLo)/(u_cpHi - u_cpLo), 0.0, 1.0);",
+    "  vec3 col = texture2D(u_cmap, vec2(t, 0.5)).rgb;",
+
+    "  if (u_stream) {",
+    "    float grad = max(speed, 1e-3);",
+    "    float f = psi/u_psiStep;",
+    "    float dist = abs(fract(f + 0.5) - 0.5) * u_psiStep;",
+    "    float px = dist/(grad*u_pxWorld);",
+    "    float line = 1.0 - smoothstep(0.35, 1.25, px);",
+    "    col = mix(col, vec3(1.0), line*0.85);",
+    "  }",
+
+    "  if (u_body && u_a > 0.0) {",
+    "    float rr = sqrt(r2);",
+    "    float edge = u_pxWorld * (u_jouk ? 2.2 : 1.4);",
+    "    float inside = 1.0 - smoothstep(u_a - edge, u_a + edge, rr);",
+    "    float ring = (1.0 - smoothstep(u_a, u_a + edge*1.8, rr)) * smoothstep(u_a - edge*1.8, u_a, rr);",
+    "    col = mix(col, u_bodyFill, inside);",
+    "    col = mix(col, u_bodyEdge, ring*0.9);",
+    "  }",
+
+    "  gl_FragColor = vec4(col, 1.0);",
+    "}"
+  ].join("\n").replace(/TAUF/g, "(2.0*PI)");
+
+  var cv = document.getElementById("cv");
+  var gl = cv.getContext("webgl", { antialias: true, depth: false, preserveDrawingBuffer: true });
+
+  if (!gl) {
+    document.querySelector(".field").innerHTML =
+      '<p style="padding:24px;margin:0">This demo needs WebGL, which this browser has disabled.</p>';
+    return;
+  }
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      throw new Error(gl.getShaderInfoLog(s));
+    }
+    return s;
+  }
+
+  var prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+    throw new Error(gl.getProgramInfoLog(prog));
+  }
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, "a_clip");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  var tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 21, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, CMAP);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  var U = {};
+  ["u_U","u_alpha","u_Gamma","u_kappa","u_a","u_b","u_z0","u_hasU","u_hasV","u_hasD",
+   "u_jouk","u_body","u_stream","u_psiStep","u_pxWorld","u_cpLo","u_cpHi","u_vref",
+   "u_half","u_cmap","u_bodyFill","u_bodyEdge"].forEach(function (n) {
+    U[n] = gl.getUniformLocation(prog, n);
+  });
+
+  var HALF = 5.0;
+  var CP_LO = -3.0, CP_HI = 1.0;
+
+  var el = {
+    uni: document.getElementById("cUni"),
+    vor: document.getElementById("cVor"),
+    dou: document.getElementById("cDou"),
+    body: document.getElementById("cBody"),
+    stream: document.getElementById("cStream"),
+    jouk: document.getElementById("cJouk"),
+    alpha: document.getElementById("sAlpha"),
+    u: document.getElementById("sU"),
+    g: document.getElementById("sG"),
+    k: document.getElementById("sK"),
+    x: document.getElementById("sX"),
+    y: document.getElementById("sY")
+  };
+
+  function css(name) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    var m = /^#?([0-9a-f]{6})$/i.exec(v);
+    if (!m) return [0.2, 0.25, 0.3];
+    var n = parseInt(m[1], 16);
+    return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  }
+
+  function geometry() {
+    var U0 = parseFloat(el.u.value);
+    var k = parseFloat(el.k.value);
+    var x0 = parseFloat(el.x.value);
+    var y0 = parseFloat(el.y.value);
+    var a = (el.dou.checked && U0 > 0 && k > 0) ? Math.sqrt(k / (TAU * U0)) : 0;
+    var inner = a * a - y0 * y0;
+    var b = inner > 0 ? x0 + Math.sqrt(inner) : 0;
+    return { U: U0, k: k, x0: x0, y0: y0, a: a, b: b, ok: inner > 1e-6 && a > 0 };
+  }
+
+  function draw() {
+    var g = geometry();
+    var alpha = parseFloat(el.alpha.value) * Math.PI / 180;
+    var Gam = parseFloat(el.g.value);
+    var jouk = el.jouk.checked && g.ok;
+
+    var w = cv.width;
+    gl.viewport(0, 0, w, cv.height);
+
+    gl.uniform1f(U.u_U, g.U);
+    gl.uniform1f(U.u_alpha, alpha);
+    gl.uniform1f(U.u_Gamma, Gam);
+    gl.uniform1f(U.u_kappa, g.k);
+    gl.uniform1f(U.u_a, el.body.checked ? g.a : 0);
+    gl.uniform1f(U.u_b, g.b);
+    gl.uniform2f(U.u_z0, g.x0, g.y0);
+    gl.uniform1i(U.u_hasU, el.uni.checked ? 1 : 0);
+    gl.uniform1i(U.u_hasV, el.vor.checked ? 1 : 0);
+    gl.uniform1i(U.u_hasD, el.dou.checked ? 1 : 0);
+    gl.uniform1i(U.u_jouk, jouk ? 1 : 0);
+    gl.uniform1i(U.u_body, el.body.checked ? 1 : 0);
+    gl.uniform1i(U.u_stream, el.stream.checked ? 1 : 0);
+    gl.uniform1f(U.u_psiStep, 0.55 * Math.max(g.U, 0.25));
+    gl.uniform1f(U.u_pxWorld, (2 * HALF) / w);
+    gl.uniform1f(U.u_cpLo, CP_LO);
+    gl.uniform1f(U.u_cpHi, CP_HI);
+    gl.uniform1f(U.u_vref, Math.max(g.U, 0.25));
+    gl.uniform1f(U.u_half, HALF);
+    gl.uniform1i(U.u_cmap, 0);
+    gl.uniform3fv(U.u_bodyFill, css("--body-fill"));
+    gl.uniform3fv(U.u_bodyEdge, css("--body-edge"));
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+    sync(g, alpha, Gam, jouk);
+  }
+
+  function fmt(v, n) { return (v < 0 ? "\u2212" : "") + Math.abs(v).toFixed(n); }
+
+  function sync(g, alpha, Gam, jouk) {
+    document.getElementById("vAlpha").textContent = fmt(parseFloat(el.alpha.value), 1) + "\u00b0";
+    document.getElementById("vU").textContent = g.U.toFixed(2);
+    document.getElementById("vG").textContent = fmt(Gam, 2);
+    document.getElementById("vK").textContent = g.k.toFixed(2);
+    document.getElementById("vX").textContent = fmt(g.x0, 3);
+    document.getElementById("vY").textContent = fmt(g.y0, 3);
+
+    document.getElementById("rA").textContent = g.a > 0 ? g.a.toFixed(3) : "\u2014";
+    document.getElementById("rB").textContent = g.ok ? g.b.toFixed(3) : "\u2014";
+
+    var chord = jouk ? 4 * g.b : 0;
+    var cl = (chord > 0 && g.U > 0) ? (-2 * Gam) / (g.U * chord) : NaN;
+    document.getElementById("rCL").textContent = isFinite(cl) ? fmt(cl, 3) : "\u2014";
+
+    document.getElementById("tU").classList.toggle("off", !el.uni.checked);
+    document.getElementById("tV").classList.toggle("off", !el.vor.checked);
+    document.getElementById("tD").classList.toggle("off", !el.dou.checked);
+
+    var warn = document.getElementById("warn");
+    if (el.jouk.checked && !g.ok) {
+      warn.hidden = false;
+      warn.textContent = "The Joukowski map needs the circle to reach the real axis: raise the doublet strength \u03ba or bring y\u2080 toward zero.";
+    } else if (el.jouk.checked && !el.dou.checked) {
+      warn.hidden = false;
+      warn.textContent = "Turn the doublet on \u2014 without it there is no circle to map.";
+    } else {
+      warn.hidden = true;
+    }
+
+    document.getElementById("cpLo").textContent = fmt(CP_LO, 1);
+    document.getElementById("cpHi").textContent = fmt(CP_HI, 1);
+  }
+
+  function kutta() {
+    var g = geometry();
+    if (!g.ok) return;
+    var alpha = parseFloat(el.alpha.value) * Math.PI / 180;
+    var thetaTE = Math.atan2(-g.y0, g.b - g.x0);
+    var Gam = 4 * Math.PI * g.U * g.a * Math.sin(thetaTE - alpha);
+    el.g.value = Math.max(-25, Math.min(25, Gam));
+    el.vor.checked = true;
+    draw();
+  }
+
+  function preset(vals) {
+    Object.keys(vals).forEach(function (k) {
+      if (el[k].type === "checkbox") el[k].checked = vals[k];
+      else el[k].value = vals[k];
+    });
+    draw();
+  }
+
+  document.getElementById("bKutta").addEventListener("click", kutta);
+
+  document.getElementById("bAirfoil").addEventListener("click", function () {
+    preset({ uni: true, vor: true, dou: true, body: true, stream: true, jouk: true,
+             alpha: 8, u: 1, k: 8.6, x: -0.09, y: 0.09, g: 0 });
+    kutta();
+  });
+
+  document.getElementById("bCyl").addEventListener("click", function () {
+    preset({ uni: true, vor: false, dou: true, body: true, stream: true, jouk: false,
+             alpha: 0, u: 1, k: 6.283, x: 0, y: 0, g: 0 });
+  });
+
+  document.getElementById("bReset").addEventListener("click", function () {
+    preset({ uni: true, vor: true, dou: true, body: true, stream: true, jouk: false,
+             alpha: 0, u: 1, k: 6.283, x: 0, y: 0, g: 0 });
+  });
+
+  Object.keys(el).forEach(function (k) {
+    el[k].addEventListener("input", draw);
+    el[k].addEventListener("change", draw);
+  });
+
+  // Legend ramp mirrors the shader colormap.
+  var stops = [];
+  for (var i = 0; i < 21; i++) {
+    stops.push("rgb(" + CMAP[i*4] + "," + CMAP[i*4+1] + "," + CMAP[i*4+2] + ")");
+  }
+  document.getElementById("ramp").style.background = "linear-gradient(90deg," + stops.join(",") + ")";
+
+  // Resizing the canvas changes the observed parent's height, so act only on
+  // width changes or the observer retriggers itself indefinitely.
+  var lastSide = -1;
+  function resize() {
+    var side = Math.max(240, Math.round(cv.parentElement.clientWidth));
+    if (side === lastSide) return;
+    lastSide = side;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.style.height = side + "px";
+    cv.width = Math.round(side * dpr);
+    cv.height = Math.round(side * dpr);
+    draw();
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(resize).observe(cv.parentElement);
+  } else {
+    window.addEventListener("resize", resize);
+  }
+
+  // Repaint when the viewer's theme changes, so the body fill tracks the ground.
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", draw);
+  }
+
+  resize();
+})();
+</script>
+</body>
+</html>

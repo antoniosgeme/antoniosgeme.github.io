@@ -14,20 +14,20 @@ My research sits at the intersection of <strong>unsteady fluid mechanics</strong
 <section class="research-thread">
   <div class="thread-figure">
     <figure class="thread-media-card thread-media-card--wide">
-      <video autoplay muted loop playsinline>
-        <source src="/images/gallery/GustEncounter.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <figcaption>Flow response during a large-amplitude gust encounter.</figcaption>
+      <img src="/images/gallery/VortIcity_web.png" alt="Measured vorticity field over an airfoil during a transverse gust encounter" loading="lazy">
+      <figcaption>Measured vorticity field during a transverse gust encounter: a leading-edge vortex over the upper surface, and the opposite-signed sheet shed into the wake.</figcaption>
     </figure>
     <div class="thread-media-grid">
       <figure class="thread-media-card">
-        <img src="/images/gallery/breakdown.png" alt="Vortex breakdown pathlines during a transverse gust encounter" loading="lazy">
-        <figcaption>Pathlines during leading-edge vortex breakdown in a transverse gust encounter.</figcaption>
+        <video autoplay muted loop playsinline>
+          <source src="/images/gallery/GustEncounter.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <figcaption>Flow response during a large-amplitude gust encounter.</figcaption>
       </figure>
       <figure class="thread-media-card">
-        <img src="/images/gallery/IMG_4002.jpg" alt="PIV during a gust encounter" loading="lazy">
-        <figcaption>PIV measurements used to resolve the unsteady vortex field.</figcaption>
+        <img src="/images/gallery/breakdown.png" alt="Vortex breakdown pathlines during a transverse gust encounter" loading="lazy">
+        <figcaption>Pathlines during leading-edge vortex breakdown in a transverse gust encounter.</figcaption>
       </figure>
     </div>
   </div>
@@ -48,17 +48,17 @@ My research sits at the intersection of <strong>unsteady fluid mechanics</strong
 <section class="research-thread">
   <div class="thread-figure">
     <figure class="thread-media-card thread-media-card--wide">
-      <img src="/images/gallery/dark_wing_high_res.jpg" alt="Instrumented wing with distributed pressure sensors" loading="lazy">
+      <img src="/images/gallery/dark_wing_web.jpg" alt="Instrumented wing with distributed pressure sensors" loading="lazy">
       <figcaption>Instrumented wing with embedded pressure sensors used for unsteady lift estimation.</figcaption>
     </figure>
     <div class="thread-media-grid">
       <figure class="thread-media-card">
-        <img src="/images/gallery/IMG_9883.jpg" alt="Experimental setup for sensing and control experiments" loading="lazy">
-        <figcaption>Experimental setup for pressure-sensing and control studies.</figcaption>
+        <img src="/images/gallery/WingInside.jpg" alt="Sensor board and wiring harness inside the instrumented wing" loading="lazy">
+        <figcaption>Sensor board and wiring harness inside the wing.</figcaption>
       </figure>
-      <figure class="thread-media-card">
-        <img src="/images/gallery/IMG_7257.jpg" alt="Research facility for flow sensing experiments" loading="lazy">
-        <figcaption>Facility view from experiments on sensing-informed aerodynamics.</figcaption>
+      <figure class="thread-media-card thread-media-card--fit">
+        <img src="/images/gallery/Reconst_contour.png" alt="Vortex structure reconstructed from a limited set of measurements" loading="lazy">
+        <figcaption>Vortex structure reconstructed from a limited set of measurements.</figcaption>
       </figure>
     </div>
   </div>
@@ -79,8 +79,8 @@ My research sits at the intersection of <strong>unsteady fluid mechanics</strong
 <section class="research-thread">
   <div class="thread-figure">
     <figure class="thread-media-card thread-media-card--wide">
-      <img src="/images/gallery/PEEKcone.jpg" alt="Cone-flare model used for high-speed boundary-layer experiments" loading="lazy">
-      <figcaption>Cone-flare model in HAPL's hypersonic facility; IR thermography characterises transition.</figcaption>
+      <img src="/images/gallery/Temps_web.jpg" alt="Infrared surface temperature on a cone showing streamwise turbulent wedges" loading="lazy">
+      <figcaption>Infrared surface temperature on the cone. The dark streamwise streaks are turbulent wedges spreading from discrete roughness &mdash; this is how transition is located.</figcaption>
     </figure>
     <div class="thread-media-grid">
       <figure class="thread-media-card">
@@ -88,11 +88,11 @@ My research sits at the intersection of <strong>unsteady fluid mechanics</strong
           <source src="/images/gallery/temperature_field_web.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <figcaption>IR thermography revealing high-speed surface-temperature structure.</figcaption>
+        <figcaption>IR thermography resolving the surface temperature field through a run.</figcaption>
       </figure>
       <figure class="thread-media-card">
-        <img src="/images/gallery/Bubble.jpg" alt="Bubble flow dynamics in high-speed experiments" loading="lazy">
-        <figcaption>Bubble-flow visualization from high-speed boundary-layer experiments.</figcaption>
+        <img src="/images/gallery/PEEKcone.jpg" alt="PEEK cone-flare model in the hypersonic facility" loading="lazy">
+        <figcaption>The PEEK cone-flare model that produced it, in HAPL&rsquo;s hypersonic facility.</figcaption>
       </figure>
     </div>
   </div>
@@ -133,6 +133,8 @@ My research sits at the intersection of <strong>unsteady fluid mechanics</strong
 .thread-media-card img{aspect-ratio:4/3;object-fit:cover}
 .thread-media-card video{aspect-ratio:4/3;object-fit:contain;background:#f5f7f9}
 .thread-media-card--wide video{aspect-ratio:auto;height:auto;max-height:420px}
+.thread-media-card--wide img{aspect-ratio:auto;height:auto;max-height:420px;object-fit:contain;background:#f5f7f9}
+.thread-media-card--fit img{object-fit:contain;background:#f5f7f9}
 .thread-media-card figcaption{
   font-size:.85rem;color:#606b78;text-align:center;padding:8px 4px 0
 }
